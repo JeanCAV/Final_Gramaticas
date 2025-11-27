@@ -4,16 +4,11 @@ from PySide6.QtWidgets import (
     QVBoxLayout, QLabel, QPushButton
 )
 from PySide6.QtCore import Signal, Qt
-
-# Importación de la página de menú refactorizada
 from GUI.menu_page import MenuPage
 
-# --- 1. PLACEHOLDER DE MÓDULOS ---
+
 class ModulePlaceholder(QWidget):
-    """
-    Placeholder temporal para los módulos (GDC, MT, GIC) para probar la navegación.
-    Esta clase será reemplazada por la implementación real de cada módulo.
-    """
+
     # Señal para pedirle a la ventana principal que regrese al menú
     back_requested = Signal() 
 
@@ -50,14 +45,9 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Teoría de la Computación: Herramienta Educativa")
         self.setGeometry(100, 100, 1000, 700) # Tamaño y posición inicial
         self.setMinimumSize(800, 600)
-        
-        # FIX: Asegurar un fondo blanco/claro consistente para toda la ventana
-        # Esto soluciona que el QMainWindow tome el color oscuro del sistema.
         self.setStyleSheet("QMainWindow { background-color: #f0f0f0; }")
-        
-        # Crear el Stack para la navegación
         self.stack = QStackedWidget()
-        self.setCentralWidget(self.stack) # Establecer el stack como widget central
+        self.setCentralWidget(self.stack)
         
         # Inicializar y añadir todas las páginas al stack
         self._init_pages()
@@ -71,12 +61,10 @@ class MainWindow(QMainWindow):
     def _init_pages(self):
         """Inicializa todas las vistas modulares y las añade al stack."""
         
-        # 0. Menú Principal (la vista refactorizada)
         self.menu_page = MenuPage()
         self.stack.addWidget(self.menu_page)
         
         # 1. Módulo MT (Tren Mágico)
-        # Nota: El orden en el menú es Tren, Jardín, Muñecas.
         self.mt_module = ModulePlaceholder("Módulo MT (Tren Mágico)")
         self.stack.addWidget(self.mt_module)
 
@@ -105,8 +93,6 @@ class MainWindow(QMainWindow):
 
 # --- 3. FUNCIÓN DE INICIO ---
 def main():
-    """Función principal para lanzar la aplicación."""
-    # Instanciamos QApplication solo una vez
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()

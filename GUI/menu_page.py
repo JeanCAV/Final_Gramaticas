@@ -9,23 +9,18 @@ from GUI.main_Window import Ui_MainMenu
 class MenuPage(QWidget):
     """
     Widget de Menú Principal.
-    Encapsula la interfaz (Ui_MainMenu) y su lógica específica (íconos, hover, estilos).
-    Emite señales para que el contenedor principal gestione la navegación (QStackedWidget).
     """
     
-    # Señales Públicas para la Navegación (Interface de comunicación)
+    # Navegación a los módulos
     train_clicked = Signal()
     garden_clicked = Signal()
     dolls_clicked = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
-
-        # Configura la interfaz diseñada en Qt Designer
         self.ui = Ui_MainMenu()
         self.ui.setupUi(self) 
 
-        # Mapas de Texto para el efecto Hover
         self.original_texts = {
             self.ui.trainButton: " El Tren Mágico",
             self.ui.gardenButton: " El Jardín Mágico",
@@ -38,10 +33,8 @@ class MenuPage(QWidget):
             self.ui.dollsButton: " Gramáticas Independientes de Contexto"
         }
 
-        # Inicialización de estilos e íconos
         self.add_icons_and_fix_styles()
         
-        # Instalación de filtros de eventos para el hover
         self.ui.trainButton.installEventFilter(self)
         self.ui.gardenButton.installEventFilter(self)
         self.ui.dollsButton.installEventFilter(self)
@@ -53,7 +46,7 @@ class MenuPage(QWidget):
 
 
     def eventFilter(self, watched, event):
-        """Maneja el efecto de hover para cambiar el texto del botón."""
+        """Hover para cambiar el texto de los botones."""
         if watched in self.original_texts:
             if event.type() == QEvent.Type.Enter:
                 watched.setText(self.hover_texts[watched])
@@ -65,31 +58,34 @@ class MenuPage(QWidget):
 
 
     def add_icons_and_fix_styles(self):
-        """Añade íconos de qtawesome, ajusta el tamaño mínimo y corrige el estilo."""
+        """Añade íconos a los botones"""
         icon_size = QSize(32, 32)
         
-        # Tren Mágico (Máquina de Turing)
+        # Tren Mágico (MT)
         icon_train = qta.icon('fa5s.train', color='white')
         self.ui.trainButton.setIcon(icon_train)
         self.ui.trainButton.setIconSize(icon_size)
         self.ui.trainButton.setMinimumHeight(100)
         
-        # Jardín Mágico (Gramáticas Dependientes de Contexto)
+        # Jardín Mágico (GDC)
         icon_garden = qta.icon('fa5s.seedling', color='white')
         self.ui.gardenButton.setIcon(icon_garden)
         self.ui.gardenButton.setIconSize(icon_size)
         self.ui.gardenButton.setMinimumHeight(100)
         
-        # Muñecas Rusas (Gramáticas Independientes de Contexto)
+        # Muñecas Rusas (GIC)
         icon_doll = qta.icon('fa5s.user-circle', color='white') 
         self.ui.dollsButton.setIcon(icon_doll)
         self.ui.dollsButton.setIconSize(icon_size)
         self.ui.dollsButton.setMinimumHeight(100)
         
-        # Corrección de estilo para la alineación del texto y el padding
+        # Alineacion y padding
         current_style = self.styleSheet() 
         fixed_style = current_style.replace(
             "text-align: center;",
             "text-align: center"
         )
         self.setStyleSheet(fixed_style)
+
+
+        
