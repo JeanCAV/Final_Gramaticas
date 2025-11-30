@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton, QMessageBox
 from PySide6.QtCore import Signal, Qt
+from PySide6.QtGui import QPixmap
 
 # Importa la clase de diseño UI (asumimos que gic_ui.py está en el mismo paquete)
 from .gic_ui import GIC_Module as Ui_GIC_Module 
@@ -54,9 +55,13 @@ class GICModule(QWidget):
         )
 
         # 5. Adición de Botones de seleccionar muñecas (reglas) al statusContentLayout
-        self.ui.statusContentLayout.addWidget(self.ui.actionButton1)
-        self.ui.statusContentLayout.addWidget(self.ui.actionButton2)
-        self.ui.statusContentLayout.addWidget(self.ui.actionButton3)
+        
+        self.ui.statusContentLayout.addWidget(self.ui.actionButton2)#2
+        self.ui.statusContentLayout.addWidget(self.ui.actionButton4)
+        self.ui.statusContentLayout.addWidget(self.ui.actionButton1)#1
+        self.ui.statusContentLayout.addWidget(self.ui.actionButton3)#3
+        self.ui.statusContentLayout.addWidget(self.ui.actionButton5)
+        self.ui.statusContentLayout.addWidget(self.ui.actionButton6)
         
         # 6. Inicialización y adición de la etiqueta de estado
         self.status_label = QLabel()
@@ -82,6 +87,9 @@ class GICModule(QWidget):
         self.ui.actionButton1.clicked.connect(lambda: self.handle_derivation_step(1))
         self.ui.actionButton2.clicked.connect(lambda: self.handle_derivation_step(2))
         self.ui.actionButton3.clicked.connect(lambda: self.handle_derivation_step(3))
+        self.ui.actionButton4.clicked.connect(lambda: self.show_incorrect_derivation_dialog())
+        self.ui.actionButton5.clicked.connect(lambda: self.show_incorrect_derivation_dialog())
+        self.ui.actionButton6.clicked.connect(lambda: self.show_incorrect_derivation_dialog())
         
         # Conectar el botón de reinicio
         self.ui.resetButton.clicked.connect(self.reset_derivation)
@@ -286,22 +294,40 @@ class GICModule(QWidget):
             # Derivación completa: Muestra el mensaje de debug
             debug_message = "DEBUG: Árbol de Derivación Visualizado (Derivación Completa)"
             
-            # 1. En la sección de Derivación (Árbol/Forma Sentencial)
-            self.ui.derivationTextDisplay.setText(
-                f"La derivación final es: S =>* aaabbb\n\n{debug_message}\n\n"
-                f"Reglas aplicadas:\n"
-                f"{'\n'.join(self.derivation_history)}"
+            
+            # Muñecas Rusas
+            image_path = "Modules/assets/arbol.png"
+            
+            # a) Cargar la imagen
+            pixmap = QPixmap(image_path)
+            
+            if pixmap.isNull():
+                # Si la imagen no se carga, mostrar un mensaje de error en el QLabel
+                self.ui.dollsVisualImage.setText(f"ERROR: No se pudo cargar la imagen:\n{image_path}")
+                return
+            
+            # b) Obtener el tamaño del widget (el tamaño incluye el padding/margen de 5px)
+            target_size = self.ui.dollsVisualImage.size()
+            
+            # c) Escalar la imagen para ajustarla al tamaño del widget (KeepAspectRatio asegura que la imagen no se distorsione)
+            scaled_pixmap = pixmap.scaled(
+                target_size, 
+                Qt.KeepAspectRatio, 
+                Qt.SmoothTransformation # Para un escalado de mejor calidad
             )
             
-            # 2. En la sección de Visualización (Muñecas Rusas)
-            self.ui.dollsVisualDisplay.setText(
+            # d) Establecer la imagen escalada en el QLabel
+            self.ui.dollsVisualImage.setPixmap(scaled_pixmap)
+            
+            # Forma sentencial
+            self.ui.derivationTextDisplay.setText(
                 f"Visualización del Árbol de Derivación:\n\n"
-                f"   S\n"
-                f" / | \\\n"
-                f"a  S  b\n"
-                f" / | \\\n"
-                f"a  S  b\n"
-                f"  / \\\n"
-                f" a   b\n\n"
-                f"{debug_message}"
+                f"      S\n"
+                f"  /   |    \ \n"
+                f"a     S     b \n"
+                f"   /  |  \ \n"
+                f"  a   S   b \n"
+                f"    /   \ \n"
+                f"   a     b \n"
+                
             )

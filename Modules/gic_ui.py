@@ -11,7 +11,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout,
     QLabel, QPushButton, QScrollArea, QSizePolicy,
     QTextEdit, QVBoxLayout, QWidget)
-
+import os
 
 # ==============================================================================
 # 2. DEFINICIÓN DE LA UI DEL MODULO GIC
@@ -85,12 +85,12 @@ class GIC_Module(QWidget):
 "}\n"
 "\n"
 "/* Estilo específico para los nuevos botones dentro del área de estado */\n"
-"QPushButton#actionButton1, QPushButton#actionButton2, QPushButton#actionButton3 {\n"
+"QPushButton#actionButton4, QPushButton#actionButton5, QPushButton#actionButton6, QPushButton#actionButton1, QPushButton#actionButton2, QPushButton#actionButton3 {\n"
 "    background-color: #2ecc71; /* Un color verde para destacar */\n"
 "    margin: 10px 0px 10px 0px; /* Margen superior e inferior para separación */\n"
 "    min-height: 35px;\n"
 "}\n"
-"QPushButton#actionButton1:hover, QPushButton#actionButton2:hover, QPushButton#actionButton3:hover {\n"
+"QPushButton#actionButton4:hover, QPushButton#actionButton5:hover, QPushButton#actionButton6:hover, QPushButton#actionButton1:hover, QPushButton#actionButton2:hover, QPushButton#actionButton3:hover {\n"
 "    background-color: #27ae60;\n"
 "}\n"
 "\n"
@@ -219,12 +219,13 @@ class GIC_Module(QWidget):
         self.visualTitle.setObjectName(u"visualTitle")
         self.verticalLayout_2.addWidget(self.visualTitle)
 
-        # Área de Texto para la Visualización (Muñecas Rusas)
-        self.dollsVisualDisplay = QTextEdit(self.centerColumnWidget)
-        self.dollsVisualDisplay.setObjectName(u"dollsVisualDisplay")
-        self.dollsVisualDisplay.setSizePolicy(sizePolicy3) # Mismo tamaño que Derivation
-        self.dollsVisualDisplay.setReadOnly(True)
-        self.verticalLayout_2.addWidget(self.dollsVisualDisplay)
+        # ÁREA DE VISUALIZACIÓN DE IMAGEN (REEMPLAZO DE QTextEdit)
+        self.dollsVisualImage = QLabel(self.centerColumnWidget)
+        self.dollsVisualImage.setObjectName(u"dollsVisualImage")
+        self.dollsVisualImage.setSizePolicy(sizePolicy3) # Mantiene la política de tamaño Expanding
+        self.dollsVisualImage.setStyleSheet(u"background-color: white; border: 1px solid #bdc3c7; border-radius: 8px; padding: 5px;")
+        self.dollsVisualImage.setAlignment(Qt.AlignCenter) # Centra la imagen si es más pequeña que el widget
+        self.verticalLayout_2.addWidget(self.dollsVisualImage)
 
         # Botón de Reinicio de Derivación
         self.resetButton = QPushButton(self.centerColumnWidget)
@@ -268,7 +269,7 @@ class GIC_Module(QWidget):
         self.statusScrollArea.setObjectName(u"statusScrollArea")
         self.statusScrollArea.setWidgetResizable(True)
         sizePolicy_status = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        sizePolicy_status.setVerticalStretch(1) # Le da una porción de espacio vertical
+        sizePolicy_status.setVerticalStretch(2) # Le da una porción de espacio vertical
         self.statusScrollArea.setSizePolicy(sizePolicy_status)
         
         # Widget Contenedor dentro del Scroll Area
@@ -296,6 +297,21 @@ class GIC_Module(QWidget):
         self.actionButton3 = QPushButton(self.statusContentWidget)
         self.actionButton3.setObjectName(u"actionButton3")
         self.actionButton3.setSizePolicy(sizePolicy4)
+
+        #Botón 4
+        self.actionButton4 = QPushButton(self.statusContentWidget)
+        self.actionButton4.setObjectName(u"actionButton4")
+        self.actionButton4.setSizePolicy(sizePolicy4)
+
+        #Botón 5
+        self.actionButton5 = QPushButton(self.statusContentWidget)
+        self.actionButton5.setObjectName(u"actionButton5")
+        self.actionButton5.setSizePolicy(sizePolicy4)
+
+        #Botón 6
+        self.actionButton6 = QPushButton(self.statusContentWidget)
+        self.actionButton6.setObjectName(u"actionButton6")
+        self.actionButton6.setSizePolicy(sizePolicy4)
         
         # Es necesario establecer el Widget Contenedor antes de agregar el layout al ScrollArea
         self.statusScrollArea.setWidget(self.statusContentWidget)
@@ -312,7 +328,7 @@ class GIC_Module(QWidget):
         self.rulesScrollArea.setObjectName(u"rulesScrollArea")
         self.rulesScrollArea.setWidgetResizable(True)
         sizePolicy_rules = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        sizePolicy_rules.setVerticalStretch(2) # Le da el doble de espacio vertical que el de estado
+        sizePolicy_rules.setVerticalStretch(1) # Le da el doble de espacio vertical que el de estado
         self.rulesScrollArea.setSizePolicy(sizePolicy_rules)
         
         # Widget Contenedor dentro del Scroll Area (donde se añadirán los botones de reglas dinámicamente)
@@ -349,16 +365,121 @@ class GIC_Module(QWidget):
     # Fin de setupUi
 
     # ======================================================================
-    # 4. TRADUCCIÓN/TEXTOS DE LA INTERFAZ
+    # 4. TRADUCCIÓN/TEXTOS DE LA INTERFAZ (SOLUCIÓN NATIVA CON QPainter)
     # ======================================================================
     def retranslateUi(self, GIC_Module):
         """
-        Establece los textos visibles para todos los widgets.
+        Establece los textos (ahora iconos/imágenes para las reglas) visibles 
+        para todos los widgets, usando QPainter nativo para dibujar los símbolos.
         """
-        # Título de la ventana principal
-        GIC_Module.setWindowTitle(QCoreApplication.translate("GIC_Module", u"Módulo de Muñecas Rusas (GIC)", None))
+        # --- FUNCIÓN AUXILIAR PARA CREAR ICONOS DE REGLAS NATIVA ---
+        ICON_HEIGHT = 40
+        SYMBOL_SIZE = 30 # Tamaño de las imágenes S, a, b
+        ARROW_WIDTH = 30 # Espacio para ' → '
+        FONT_SIZE = 18
+
+        # Mapeo de Símbolos a Rutas de Archivo
+        SYMBOL_PATHS = {
+            "S": "Modules/assets/S_big.png",
+            "a": "Modules/assets/a_blue.png",
+            "b": "Modules/assets/b_red.png",
+        }
+        
+        # Cargamos los QPixmap una sola vez para eficiencia
+        pixmaps = {
+            symbol: QPixmap(path) 
+            for symbol, path in SYMBOL_PATHS.items()
+        }
+
+        def create_rule_icon_native(rule_string, min_width=200):
+            """
+            Dibuja la secuencia de símbolos e imágenes en un solo QPixmap.
+            """
+            
+            current_x = 10 # Posición inicial para el dibujo
+            elements = rule_string.split(' ') # Dividir la regla por espacios (ej. ['S', '→', 'a', 'S', 'b'])
+
+            # Calcular un ancho más preciso o usar el mínimo
+            content_width = 0
+            for element in elements:
+                if element in pixmaps:
+                    content_width += SYMBOL_SIZE
+                elif element == '→':
+                    content_width += ARROW_WIDTH
+                elif element == '\u03B5': # Épsilon
+                    content_width += ARROW_WIDTH
+                elif element: # Otros caracteres como 'ab' en "S→ab"
+                    # Asumimos un ancho fijo para el texto no dividido
+                    content_width += ARROW_WIDTH * (len(element) // 2)
+
+            # Usamos el máximo entre el contenido real + padding y un ancho fijo
+            ICON_WIDTH = max(min_width, content_width + 20) 
+            
+            pixmap = QPixmap(ICON_WIDTH, ICON_HEIGHT)
+            pixmap.fill(Qt.transparent)
+            
+            painter = QPainter(pixmap)
+            painter.setRenderHint(QPainter.Antialiasing)
+            
+            # Configuramos la fuente para los símbolos de texto (flecha, épsilon)
+            font = QFont("Arial", FONT_SIZE, QFont.Bold)
+            painter.setFont(font)
+            
+            # Centro el dibujo si el contenido es menor que el ICON_WIDTH
+            start_offset = (ICON_WIDTH - content_width) // 2
+            current_x = start_offset
+            
+            # Dibujar cada elemento
+            for element in elements:
+                if not element: continue
+                
+                # 1. Dibujar Imagen (S, a, b)
+                if element in pixmaps:
+                    # Dibujar la imagen centrada verticalmente
+                    y_pos = (ICON_HEIGHT - SYMBOL_SIZE) // 2
+                    painter.drawPixmap(current_x, y_pos, SYMBOL_SIZE, SYMBOL_SIZE, pixmaps[element])
+                    current_x += SYMBOL_SIZE
+                    
+                # 2. Dibujar Flecha (→)
+                elif element == '→':
+                    text_rect = QRect(current_x, 0, ARROW_WIDTH, ICON_HEIGHT)
+                    painter.drawText(text_rect, Qt.AlignCenter, "→")
+                    current_x += ARROW_WIDTH
+                
+                # 3. Dibujar Épsilon (ε)
+                elif element == '\u03B5':
+                    # Usamos una fuente más grande para el épsilon
+                    epsilon_font = QFont("Arial", 20, QFont.Bold)
+                    painter.setFont(epsilon_font)
+                    text_rect = QRect(current_x, 0, ARROW_WIDTH, ICON_HEIGHT)
+                    painter.drawText(text_rect, Qt.AlignCenter, "\u03B5")
+                    painter.setFont(font) # Volvemos a la fuente original
+                    current_x += ARROW_WIDTH
+                    
+                # 4. Dibujar Símbolos Terminales Agrupados (ej. 'ab' en S → ab)
+                else: 
+                    # Manejar casos como 'ab' sin espacios (si hubieran en alguna regla)
+                    # Esto solo funciona si los símbolos se unen, si se desea el dibujo, hay que separarlos.
+                    # En este caso, asumimos que 'ab' se dibujaría como 'a' y 'b' separados:
+                    
+                    # Dibujar 'a'
+                    y_pos = (ICON_HEIGHT - SYMBOL_SIZE) // 2
+                    painter.drawPixmap(current_x, y_pos, SYMBOL_SIZE, SYMBOL_SIZE, pixmaps['a'])
+                    current_x += SYMBOL_SIZE
+                    
+                    # Dibujar 'b'
+                    y_pos = (ICON_HEIGHT - SYMBOL_SIZE) // 2
+                    painter.drawPixmap(current_x, y_pos, SYMBOL_SIZE, SYMBOL_SIZE, pixmaps['b'])
+                    current_x += SYMBOL_SIZE
+
+
+            painter.end()
+            return QIcon(pixmap)
+
+        # ----------------------------------------------------------------------
         
         # Títulos y Etiquetas de la columna izquierda
+        GIC_Module.setWindowTitle(QCoreApplication.translate("GIC_Module", u"Módulo de Muñecas Rusas (GIC)", None))
         self.theoryTitle.setText(QCoreApplication.translate("GIC_Module", u"Gramáticas Independientes de Contexto (GIC)", None))
         self.targetWordLabel.setText(QCoreApplication.translate("GIC_Module", u"Meta a Generar: aaabbb", None))
         self.backToMenuButton.setText(QCoreApplication.translate("GIC_Module", u"← Menú Principal", None))
@@ -366,20 +487,72 @@ class GIC_Module(QWidget):
         # Títulos y Propiedades de la columna central
         self.derivationTitle.setText(QCoreApplication.translate("GIC_Module", u"Árbol de Derivación (Forma Sentencial)", None))
         self.visualTitle.setText(QCoreApplication.translate("GIC_Module", u"Visualización (Muñecas Rusas)", None))
-        # Propiedades de fuente específicas para la visualización de Muñecas Rusas
-        self.dollsVisualDisplay.setProperty(u"fontFamily", QCoreApplication.translate("GIC_Module", u"Courier New", None))
-        self.dollsVisualDisplay.setProperty(u"fontSize", QCoreApplication.translate("GIC_Module", u"14pt", None))
         self.resetButton.setText(QCoreApplication.translate("GIC_Module", u"Reiniciar Derivación", None))
         
         # Títulos de la columna derecha
         self.statusTitle.setText(QCoreApplication.translate("GIC_Module", u"Selecciona una Muñeca (Estado)", None))
         self.rulesTitle.setText(QCoreApplication.translate("GIC_Module", u"Reglas de Derivacion", None))
-        # Texto del nuevo botón
         self.showTreeButton.setText(QCoreApplication.translate("GIC_Module", u"Ver Árbol de Derivación", None))
 
-        # Texto de los nuevos botones (Ejemplo de reglas)
+        # --- REGLAS: Se establecen los textos reales (para la lógica) y se crean los iconos ---
+        
+        # Regla 1 (Paso 1): S → a S b
+        rule1_text = QCoreApplication.translate("GIC_Module", u"S → a S b", None)
+        self.actionButton1.setText(rule1_text) 
+        
+        # Regla 2 (Paso 2): S → a S b (Corregido)
+        rule2_text = QCoreApplication.translate("GIC_Module", u"S → a S b", None) 
+        self.actionButton2.setText(rule2_text) 
+        
+        # Regla 3 (Paso 3): S → a b (Corregido)
+        rule3_text = QCoreApplication.translate("GIC_Module", u"S → a b", None) 
+        self.actionButton3.setText(rule3_text) 
 
-        self.actionButton1.setText(QCoreApplication.translate("GIC_Module", u"S → a S b", None)) 
-        self.actionButton2.setText(QCoreApplication.translate("GIC_Module", u"a S b → a a S b b", None)) 
-        self.actionButton3.setText(QCoreApplication.translate("GIC_Module", u"a a S b b → a a a b b b", None)) 
-    
+        # Regla 4: Mantenemos el texto original
+        rule4_text = QCoreApplication.translate("GIC_Module", u"b S b → a S a", None)
+        self.actionButton4.setText(rule4_text) 
+        
+        # Regla 5: S → ε
+        rule5_text = QCoreApplication.translate("GIC_Module", u"S → \u03B5", None)
+        self.actionButton5.setText(rule5_text)
+        
+        # Regla 6: Mantenemos el texto original
+        rule6_text = QCoreApplication.translate("GIC_Module", u"a b a b → S", None)
+        self.actionButton6.setText(rule6_text)
+
+        # 3. Asignar los iconos (utilizando la función nativa)
+        
+        icon1 = create_rule_icon_native(rule1_text)
+        icon3 = create_rule_icon_native(rule3_text)
+        icon4 = create_rule_icon_native(rule4_text)
+        icon5 = create_rule_icon_native(rule5_text)
+        icon6 = create_rule_icon_native(rule6_text)
+
+        self.actionButton1.setIcon(icon1)
+        self.actionButton1.setIconSize(icon1.actualSize(QSize(200, 40)))
+        
+        self.actionButton2.setIcon(icon1) # Usa el mismo icono S → a S b
+        self.actionButton2.setIconSize(icon1.actualSize(QSize(200, 40)))
+        
+        self.actionButton3.setIcon(icon3)
+        self.actionButton3.setIconSize(icon3.actualSize(QSize(200, 40)))
+
+        self.actionButton4.setIcon(icon4)
+        self.actionButton4.setIconSize(icon4.actualSize(QSize(200, 40)))
+        
+        self.actionButton5.setIcon(icon5)
+        self.actionButton5.setIconSize(icon5.actualSize(QSize(200, 40)))
+        
+        self.actionButton6.setIcon(icon6)
+        self.actionButton6.setIconSize(icon6.actualSize(QSize(200, 40)))
+        
+        # 4. Ajuste de Estilo: Ocultar el texto del botón.
+        # Esto es necesario para que el texto de la regla no se superponga al icono.
+        style_suffix = " text-align: left; padding-left: 0px; text-indent: -1000px;" 
+        
+        self.actionButton1.setStyleSheet(self.actionButton1.styleSheet() + style_suffix)
+        self.actionButton2.setStyleSheet(self.actionButton2.styleSheet() + style_suffix)
+        self.actionButton3.setStyleSheet(self.actionButton3.styleSheet() + style_suffix)
+        self.actionButton4.setStyleSheet(self.actionButton4.styleSheet() + style_suffix)
+        self.actionButton5.setStyleSheet(self.actionButton5.styleSheet() + style_suffix)
+        self.actionButton6.setStyleSheet(self.actionButton6.styleSheet() + style_suffix)
