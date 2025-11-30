@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
     """Ventana principal de la aplicación"""
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Teoría de la Computación: Herramienta Educativa")
+        self.setWindowTitle("Gramaticas y Maquina de Turing")
         self.setGeometry(100, 100, 1000, 700) # Tamaño y posición inicial
         self.setMinimumSize(800, 600)
         self.setStyleSheet("QMainWindow { background-color: #f0f0f0; }")

@@ -1,6 +1,7 @@
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton
-from PySide6.QtCore import Signal
-# Importa la clase de diseño UI 
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton, QMessageBox
+from PySide6.QtCore import Signal, Qt
+
+# Importa la clase de diseño UI (asumimos que gic_ui.py está en el mismo paquete)
 from .gic_ui import GIC_Module as Ui_GIC_Module 
 
 class GICModule(QWidget):
@@ -15,13 +16,10 @@ class GICModule(QWidget):
         super().__init__(parent)
         
         # 2. Cargar e Iniciar la interfaz visual
-        # Instanciamos la clase de diseño de la UI
         self.ui = Ui_GIC_Module()
-        # Configuramos la UI en esta instancia de QWidget (self)
         self.ui.setupUi(self) 
         
         # 3. Conectar el botón de regreso de la UI a la señal del controlador
-        # El botón fue nombrado 'backToMenuButton' en gic_ui.py
         self.ui.backToMenuButton.clicked.connect(self.back_requested.emit)
         
         # 4. Configuración inicial de textos y componentes
@@ -56,17 +54,254 @@ class GICModule(QWidget):
         )
 
         # 5. Adición de Botones de seleccionar muñecas (reglas) al statusContentLayout
-        # Los botones (actionButton1, actionButton2, actionButton3) ya están creados en gic_ui.py
         self.ui.statusContentLayout.addWidget(self.ui.actionButton1)
         self.ui.statusContentLayout.addWidget(self.ui.actionButton2)
         self.ui.statusContentLayout.addWidget(self.ui.actionButton3)
         
         # 6. Inicialización y adición de la etiqueta de estado
-        self.status_label = QLabel("Este panel mostrará mensajes de estado y feedback durante la derivación. Utiliza los botones de arriba para comenzar la derivación o selecciona una muñeca (símbolo no terminal) que quieras expandir.")
+        self.status_label = QLabel()
         self.status_label.setWordWrap(True)
-        # Aplicamos el estilo de la etiqueta de estado
         self.status_label.setStyleSheet("padding: 10px; font-size: 10pt; background-color: #ecf0f1; border-radius: 4px;")
         
-        # Añadimos la etiqueta al layout debajo de los botones
         self.ui.statusContentLayout.addWidget(self.status_label)
-        self.ui.statusContentLayout.addStretch(1) # Relleno vertical para alinear todo arriba
+        self.ui.statusContentLayout.addStretch(1) # Relleno vertical
+
+        # ======================================================================
+        # PASO 1: INICIALIZAR ESTADO DE DERIVACIÓN
+        # ======================================================================
+        self.derivation_step = 0  # 0: Espera 1, 1: Espera 1, 2: Espera 3, 3: Finalizado
+        self.derivation_history = []
+        
+        # Inicializar las pantallas de visualización
+        self.reset_derivation() 
+        
+        # ======================================================================
+        # PASO 2: CONECTAR BOTONES A LA FUNCIÓN DE MANEJO
+        # ======================================================================
+        # Usamos lambda para pasar el identificador del botón (1, 2 o 3)
+        self.ui.actionButton1.clicked.connect(lambda: self.handle_derivation_step(1))
+        self.ui.actionButton2.clicked.connect(lambda: self.handle_derivation_step(2))
+        self.ui.actionButton3.clicked.connect(lambda: self.handle_derivation_step(3))
+        
+        # Conectar el botón de reinicio
+        self.ui.resetButton.clicked.connect(self.reset_derivation)
+
+        #Conectar el botón de mostrar árbol
+        self.ui.showTreeButton.clicked.connect(self.handle_show_tree)
+
+    def reset_derivation(self):
+        """
+        Reinicia el estado de la derivación y limpia las pantallas.
+        """
+        self.derivation_step = 0
+        self.derivation_history = []
+        self.update_derivation_display()
+        self.ui.rulesDisplay.setText(" ")
+
+    # ======================================================================
+    # PASO 4: FUNCIÓN AUXILIAR DE VISUALIZACIÓN
+    # ======================================================================
+    def update_derivation_display(self):
+        """
+        Actualiza el QTextEdit de derivación con la secuencia de reglas.
+        """
+        # Título de la sección
+        text = " "
+        
+        if not self.derivation_history:
+            # Texto guía al inicio
+            text += "1. Seleccione la primera muñeca (regla) para comenzar la derivación.\n"
+        else:
+            # Lista de reglas aplicadas
+            for i, rule in enumerate(self.derivation_history):
+                # Formato: 1. S → a S b
+                text += f"{i+1}. {rule}\n"
+        
+        # Mostrar el texto en el QTextEdit
+        self.ui.rulesDisplay.setText(text)
+        
+    def show_incorrect_derivation_dialog(self):
+        """
+        Muestra un QMeessageBox con un mensaje de error de derivación.
+        """
+        msg = QMessageBox(self)
+        
+        # Aplicamos estilos CSS (QSS) al cuadro de diálogo para fondo blanco
+        msg.setStyleSheet("""
+            QMessageBox {
+                background-color: #ffffff;
+            }
+            QMessageBox QLabel {
+                color: #000000;
+                font-size: 14px;
+            }
+            QMessageBox QPushButton {
+                background-color: #e0e0e0;
+                color: #000000;
+                min-width: 120px;   /* Más ancho */
+                max-width: 120px;   /* Controla ancho exacto */
+                min-height: 22px;   /* Más bajo */
+                padding: 4px 8px;   /* Ajusta relleno (vertical, horizontal) */
+                border-radius: 4px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #cfcfcf;
+            }
+        """)
+
+        
+        msg.setIcon(QMessageBox.Icon.Critical) # Usamos ícono de error
+        msg.setWindowTitle("¡Error!") 
+        msg.setText("Derivación Incorrecta") 
+        msg.setInformativeText("La regla seleccionada es incorrecta para esta derivación. Intenta nuevamente.")
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        
+        # Muestra la ventana
+        msg.exec() 
+
+    def show_dialog_message(self, title, informative_text, icon=QMessageBox.Icon.Information):
+        """
+        Muestra un QMeessageBox con un mensaje personalizado.
+        """
+        msg = QMessageBox(self)
+        
+        # Aplicamos estilos CSS (QSS) al cuadro de diálogo
+        msg.setStyleSheet("""
+            QMessageBox {
+                background-color: #ffffff;
+            }
+            QMessageBox QLabel {
+                color: #000000;
+                font-size: 14px;
+            }
+            QMessageBox QPushButton {
+                background-color: #e0e0e0;
+                color: #000000;
+                min-width: 120px;
+                max-width: 120px;
+                min-height: 22px;
+                padding: 4px 8px;
+                border-radius: 4px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #cfcfcf;
+            }
+        """)
+
+        
+        msg.setIcon(icon) 
+        msg.setWindowTitle(title) 
+        msg.setText(title) 
+        msg.setInformativeText(informative_text)
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        
+        # Muestra la ventana
+        msg.exec() 
+
+    # Modificar show_incorrect_derivation_dialog para usar la nueva función
+    def show_incorrect_derivation_dialog(self):
+        """
+        Muestra un QMeessageBox con un mensaje de error de derivación.
+        """
+        self.show_dialog_message(
+            "¡Error!",
+            "La regla seleccionada es incorrecta para esta derivación. Intenta nuevamente.",
+            QMessageBox.Icon.Critical
+        )
+        # El reinicio va después de mostrar el mensaje, en la función de manejo
+        self.reset_derivation() # Mueve el reinicio aquí si no estaba.
+
+
+    # ======================================================================
+    # PASO 3: FUNCIÓN CENTRAL DE MANEJO DE PASOS (Slot)
+    # ======================================================================
+    def handle_derivation_step(self, button_id):
+        """
+        Maneja la lógica de la secuencia de derivación (1 -> 1 -> 3).
+        """
+        # Si ya está terminado, no hacer nada (hasta que se reinicie)
+        if self.derivation_step == 3:
+            self.status_label.setText("¡Derivación completa!")
+            return
+
+        # Obtener el texto de la regla presionada para mostrarlo en el historial
+        if button_id == 1:
+            rule_text = self.ui.actionButton1.text()
+        elif button_id == 2:
+            rule_text = self.ui.actionButton2.text()
+        elif button_id == 3:
+            rule_text = self.ui.actionButton3.text()
+        else:
+            # Caso inesperado, aunque la conexión solo envía 1, 2 o 3
+            return
+
+        is_correct = False
+        next_step_prompt = ""
+        
+        # --- LÓGICA DE LA SECUENCIA 1 - 1 - 3 ---
+        
+        if self.derivation_step == 0 and button_id == 1:
+            # Paso 1/3: Espera el Botón 1 (S → a S b)
+            self.derivation_step = 1
+            is_correct = True
+            
+        elif self.derivation_step == 1 and button_id == 2:
+            # Paso 2/3: Espera el Botón 1 (S → a S b)
+            self.derivation_step = 2
+            is_correct = True
+
+        elif self.derivation_step == 2 and button_id == 3:
+            # Paso 3/3: Espera el Botón 3 (S → ab)
+            self.derivation_step = 3
+            is_correct = True
+            next_step_prompt = "¡Derivación completada!. Has generado la cadena aaabbb."
+            
+        # --- Manejo de la Acción Correcta / Incorrecta ---
+        
+        if is_correct:
+            self.derivation_history.append(rule_text)
+            self.update_derivation_display()
+            self.ui.rulesDisplay.append(next_step_prompt)
+        else:
+            # Cualquier otra acción es incorrecta (incluyendo botón 2 en cualquier momento)
+            self.show_incorrect_derivation_dialog()
+            self.reset_derivation() # Reinicia el juego después del error.
+
+    # ======================================================================
+    # PASO 5: FUNCIÓN DE MANEJO DEL BOTÓN VER ÁRBOL
+    # ======================================================================
+    def handle_show_tree(self):
+        """
+        Muestra el árbol de derivación solo si la derivación está terminada (derivation_step == 3).
+        """
+        # Comprobar si la derivación está completa
+        if self.derivation_step < 3:
+            # Derivación incompleta: Muestra la ventana emergente de error
+            self.show_dialog_message(
+                "Derivación Incompleta", 
+                "Debes completar primero la derivación de la cadena 'aaabbb' (Paso 3) antes de ver el árbol.",
+                QMessageBox.Icon.Warning
+            )
+        else:
+            # Derivación completa: Muestra el mensaje de debug
+            debug_message = "DEBUG: Árbol de Derivación Visualizado (Derivación Completa)"
+            
+            # 1. En la sección de Derivación (Árbol/Forma Sentencial)
+            self.ui.derivationTextDisplay.setText(
+                f"La derivación final es: S =>* aaabbb\n\n{debug_message}\n\n"
+                f"Reglas aplicadas:\n"
+                f"{'\n'.join(self.derivation_history)}"
+            )
+            
+            # 2. En la sección de Visualización (Muñecas Rusas)
+            self.ui.dollsVisualDisplay.setText(
+                f"Visualización del Árbol de Derivación:\n\n"
+                f"   S\n"
+                f" / | \\\n"
+                f"a  S  b\n"
+                f" / | \\\n"
+                f"a  S  b\n"
+                f"  / \\\n"
+                f" a   b\n\n"
+                f"{debug_message}"
+            )

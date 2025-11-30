@@ -120,6 +120,14 @@ class GIC_Module(QWidget):
 " \tfont-weight: bold;\n"
 " \tcolor: #2c3e50; \n"
 " \tmargin-bottom: 10px;\n"
+"QPushButton#backToMenuButton, QPushButton#showTreeButton { /* Añade showTreeButton aquí */"
+" 	background-color: #3498db; "
+"	color: white;"
+"}\n"
+"QPushButton#backToMenuButton:hover, QPushButton#showTreeButton:hover { /* Añade showTreeButton aquí */"
+" 	background-color: #2980b9;"
+"}"
+
 "}")
         
         # ======================================================================
@@ -314,9 +322,24 @@ class GIC_Module(QWidget):
         
         self.verticalLayout_4 = QVBoxLayout(self.rulesContainerWidget)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.rulesDisplay = QTextEdit(self.rulesContainerWidget)
+        self.rulesDisplay.setReadOnly(True)
+        self.verticalLayout_4.addWidget(self.rulesDisplay)
+
         self.rulesScrollArea.setWidget(self.rulesContainerWidget)
 
         self.verticalLayout_3.addWidget(self.rulesScrollArea)
+
+        # Botón para mostrar el Árbol de Derivación
+        self.showTreeButton = QPushButton(self.rightColumnWidget)
+        self.showTreeButton.setObjectName(u"showTreeButton")
+        self.showTreeButton.setSizePolicy(sizePolicy4) # sizePolicy4 es Expanding, Fixed
+        self.verticalLayout_3.addWidget(self.showTreeButton)
+
+        self.horizontalLayout.addWidget(self.rightColumnWidget)
+
+        # Conecta las señales y slots automáticamente por nombre
+        self.retranslateUi(GIC_Module)
         
         self.horizontalLayout.addWidget(self.rightColumnWidget)
 
@@ -337,7 +360,7 @@ class GIC_Module(QWidget):
         
         # Títulos y Etiquetas de la columna izquierda
         self.theoryTitle.setText(QCoreApplication.translate("GIC_Module", u"Gramáticas Independientes de Contexto (GIC)", None))
-        self.targetWordLabel.setText(QCoreApplication.translate("GIC_Module", u"Meta a Generar: [Palabra]", None))
+        self.targetWordLabel.setText(QCoreApplication.translate("GIC_Module", u"Meta a Generar: aaabbb", None))
         self.backToMenuButton.setText(QCoreApplication.translate("GIC_Module", u"← Menú Principal", None))
         
         # Títulos y Propiedades de la columna central
@@ -351,9 +374,12 @@ class GIC_Module(QWidget):
         # Títulos de la columna derecha
         self.statusTitle.setText(QCoreApplication.translate("GIC_Module", u"Selecciona una Muñeca (Estado)", None))
         self.rulesTitle.setText(QCoreApplication.translate("GIC_Module", u"Reglas de Derivacion", None))
-        
+        # Texto del nuevo botón
+        self.showTreeButton.setText(QCoreApplication.translate("GIC_Module", u"Ver Árbol de Derivación", None))
+
         # Texto de los nuevos botones (Ejemplo de reglas)
+
         self.actionButton1.setText(QCoreApplication.translate("GIC_Module", u"S → a S b", None)) 
-        self.actionButton2.setText(QCoreApplication.translate("GIC_Module", u"S → S S", None)) 
-        self.actionButton3.setText(QCoreApplication.translate("GIC_Module", u"S → ab", None)) 
+        self.actionButton2.setText(QCoreApplication.translate("GIC_Module", u"a S b → a a S b b", None)) 
+        self.actionButton3.setText(QCoreApplication.translate("GIC_Module", u"a a S b b → a a a b b b", None)) 
     
