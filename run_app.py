@@ -5,7 +5,9 @@ from PySide6.QtCore import Signal, Qt
 # IMPORTACIONES DE MÓDULOS
 from GUI.menu_page import MenuPage 
 # Importamos la clase de controlador, no la clase de UI.
-from Modules.gic_module import GICModule # <--- ¡CAMBIO CLAVE!
+from Modules.gic_module import GICModule
+from Modules.gdc_module import GDCModule
+from Modules.mt_module import MTModule
 
 
 class ModulePlaceholder(QWidget):
@@ -56,12 +58,12 @@ class MainWindow(QMainWindow):
         self.menu_page = MenuPage()
         self.stack.addWidget(self.menu_page)
         
-        # 1. Módulo MT (Tren Mágico) - Usando Placeholder
-        self.mt_module = ModulePlaceholder("Módulo MT (Tren Mágico)")
+        # 1. Módulo MT (Tren Mágico) - Funcional
+        self.mt_module = MTModule()
         self.stack.addWidget(self.mt_module)
 
-        # 2. Módulo GDC (Jardín Mágico) - Usando Placeholder
-        self.gdc_module = ModulePlaceholder("Módulo GDC (Jardín Mágico)")
+        # 2. Módulo GDC (Jardín Mágico) - Funcional
+        self.gdc_module = GDCModule()
         self.stack.addWidget(self.gdc_module)
         
         # 3. Módulo GIC (Muñecas Rusas) 

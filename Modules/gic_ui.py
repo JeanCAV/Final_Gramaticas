@@ -487,25 +487,25 @@ class GIC_Module(QWidget):
         # Títulos y Propiedades de la columna central
         self.derivationTitle.setText(QCoreApplication.translate("GIC_Module", u"Árbol de Derivación (Forma Sentencial)", None))
         self.visualTitle.setText(QCoreApplication.translate("GIC_Module", u"Visualización (Muñecas Rusas)", None))
-        self.resetButton.setText(QCoreApplication.translate("GIC_Module", u"Reiniciar Derivación", None))
+        self.resetButton.setText(QCoreApplication.translate("GIC_Module", u"🔄 Empezar de Nuevo", None))
         
         # Títulos de la columna derecha
-        self.statusTitle.setText(QCoreApplication.translate("GIC_Module", u"Selecciona una Muñeca (Estado)", None))
-        self.rulesTitle.setText(QCoreApplication.translate("GIC_Module", u"Reglas de Derivacion", None))
-        self.showTreeButton.setText(QCoreApplication.translate("GIC_Module", u"Ver Árbol de Derivación", None))
+        self.statusTitle.setText(QCoreApplication.translate("GIC_Module", u"🪆 Elige la Regla para Abrir la Muñeca", None))
+        self.rulesTitle.setText(QCoreApplication.translate("GIC_Module", u"📝 Pasos que has dado", None))
+        self.showTreeButton.setText(QCoreApplication.translate("GIC_Module", u"🌳 Ver Árbol Mágico", None))
 
         # --- REGLAS: Se establecen los textos reales (para la lógica) y se crean los iconos ---
         
         # Regla 1 (Paso 1): S → a S b
-        rule1_text = QCoreApplication.translate("GIC_Module", u"S → a S b", None)
+        rule1_text = QCoreApplication.translate("GIC_Module", u"🪆 → 🔵 🪆 🔴  (a S b)", None)
         self.actionButton1.setText(rule1_text) 
         
         # Regla 2 (Paso 2): S → a S b (Corregido)
-        rule2_text = QCoreApplication.translate("GIC_Module", u"S → a S b", None) 
+        rule2_text = QCoreApplication.translate("GIC_Module", u"🪆 → 🔵 🪆 🔴  (a S b)", None) 
         self.actionButton2.setText(rule2_text) 
         
         # Regla 3 (Paso 3): S → a b (Corregido)
-        rule3_text = QCoreApplication.translate("GIC_Module", u"S → a b", None) 
+        rule3_text = QCoreApplication.translate("GIC_Module", u"🪆 → 🔵 🔴  (a b)", None) 
         self.actionButton3.setText(rule3_text) 
 
         # Regla 4: Mantenemos el texto original

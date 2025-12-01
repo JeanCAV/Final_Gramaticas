@@ -25,33 +25,79 @@ class GICModule(QWidget):
         
         # 4. Configuración inicial de textos y componentes
         self.ui.theoryTextDisplay.setText(
-            "La <b>Gramática Independiente del Contexto (GIC)</b> funciona de una manera muy sencilla.<br><br>"
-            "Imagina que tienes unas muñecas rusas: una grande, y dentro de ella unas más pequeñas,"
-            "y dentro de esa, otra todavía más pequeña.<br>"
-            "Cada muñeca representa una regla que nos dice cómo continuar.<br><br>"
-
-            "Una <b>GIC</b> funciona igual:<br>"
-            "tiene un símbolo inicial (la muñeca grande) y unas reglas que nos dicen "
-            "cómo debemos abrirla y qué aparecerá dentro.<br><br>"
-
-            "Por ejemplo, si la regla dice:<br>"
-            "<b> - S → a S b </b> <br>"
-            "Significa que la muñeca grande S se abre y adentro aparece una parte a, <br>"
-            "otra parte b, (otras muñecas) y hay otra muñeca S la cual se puede volver a abrir.<br>"
-            "<b> - S → ab </b> <br>"
-            "Esta regla es la muñeca más pequeña, que ya no se abre más.<br><br>"
-
-            "Así, para formar la cadena aabb, hacemos: <br>"
-            "1. Abrimos la muñeca grande: aparece a … b, y adentro otra S. <br>"
-            "2. La muñeca de adentro es la más pequeña y nos da ab. <br>"
-            "3. Si juntamos todo lo que apareció desde la muñeca más grande nos queda aabb. <br><br>"
+            "<h2>🪆 Las Muñecas Rusas Mágicas</h2><br>"
             
-            "<b>Reglas del juego</b><br>"
-            "1. Empieza escogiendo un símbolo inicial (S) en la sección de seleccionar muñecas.<br>"
-            "2. Una vez ubicado el símbolo inicial, escoge la manera en que se debe <br> seguir abriendo la muñeca con otras reglas<br>"
-            "3. Cada vez que aparezca una S, puedes abrirla usando otra regla.<br>"
-            "4. Cuando ya no haya S, has terminado.<br>"
-            "5. Si la cadena final coincide con la que debes formar, ganaste"
+            "<b>¿De qué trata este juego?</b><br>"
+            "Imagina que tienes una muñeca rusa mágica. Las muñecas rusas son esas "
+            "muñequitas que se abren y dentro tienen otra muñequita más pequeña, "
+            "y esa tiene otra, ¡y así hasta llegar a la más chiquitita!<br><br>"
+            
+            "<b>🎨 Las Muñecas Especiales:</b><br>"
+            "En este juego, cada muñeca tiene letras pintadas:<br>"
+            "• <span style='font-size:16pt; color:#3498db'>🔵 a</span> = Letra azul (a)<br>"
+            "• <span style='font-size:16pt; color:#e74c3c'>🔴 b</span> = Letra roja (b)<br>"
+            "• <span style='font-size:16pt'>🪆 S</span> = Muñeca que se puede abrir<br><br>"
+            
+            "<b>🎮 ¿Cómo jugar?</b><br><br>"
+            
+            "<b>Paso 1:</b> Empieza con la muñeca grande 🪆<br>"
+            "Mira los botones de reglas abajo y elige cómo abrirla<br><br>"
+            
+            "<b>Paso 2:</b> Cada vez que abras una muñeca, aparecerán letras<br>"
+            "• Algunas son letras de colores que ya están listas 🔵🔴<br>"
+            "• Otras son muñecas 🪆 que puedes seguir abriendo<br><br>"
+            
+            "<b>Paso 3:</b> Sigue abriendo muñecas<br>"
+            "Cada vez que veas una 🪆, puedes abrirla con otra regla<br><br>"
+            
+            "<b>Paso 4:</b> Cuando ya no queden muñecas 🪆 por abrir<br>"
+            "¡Habrás formado tu patrón de letras!<br><br>"
+            
+            "<b>🎯 Tu Misión:</b><br>"
+            "Formar el patrón: <b>a a a b b b</b><br>"
+            "Tres letras azules 🔵🔵🔵 seguidas de tres letras rojas 🔴🔴🔴<br><br>"
+            
+            "<b>💡 Las Reglas Mágicas:</b><br>"
+            "Hay 2 reglas para abrir las muñecas:<br><br>"
+            
+            "<b>Regla 1: 🪆 → 🔵 🪆 🔴</b><br>"
+            "Si abres la muñeca con esta regla, aparece:<br>"
+            "• Una letra azul 🔵 (a)<br>"
+            "• Otra muñeca 🪆 en el medio<br>"
+            "• Una letra roja 🔴 (b)<br><br>"
+            
+            "<b>Regla 2: 🪆 → 🔵 🔴</b><br>"
+            "Si abres la muñeca con esta regla, aparece:<br>"
+            "• Una letra azul 🔵 (a)<br>"
+            "• Una letra roja 🔴 (b)<br>"
+            "¡Y ya no hay más muñecas por abrir!<br><br>"
+            
+            "<b>🎓 ¿Qué es una Gramática Independiente de Contexto?</b><br>"
+            "Este juego de muñecas rusas es una <b>Gramática Independiente de Contexto (GIC)</b>.<br><br>"
+            
+            "¿Por qué se llama 'Independiente de Contexto'?<br>"
+            "Porque cada muñeca 🪆 se puede abrir de la misma manera, "
+            "sin importar qué haya alrededor de ella. No necesita mirar a sus vecinas.<br><br>"
+            
+            "En cambio, en el Jardín Mágico (que ya jugaste) las plantas SÍ miraban "
+            "a sus vecinas antes de crecer. ¡Esa es la diferencia!<br><br>"
+            
+            "<b>💭 ¿Para qué sirve esto?</b><br>"
+            "Las GIC se usan para:<br>"
+            "• Entender cómo funcionan los lenguajes de programación<br>"
+            "• Crear traductores que convierten código a lenguaje de máquina<br>"
+            "• Analizar si una frase está bien escrita gramaticalmente<br><br>"
+            
+            "¡Los compiladores de Python, Java y otros lenguajes usan GIC!<br><br>"
+            
+            "<b>✨ Ejemplo paso a paso:</b><br>"
+            "Para formar <b>aabb</b> hacemos:<br>"
+            "1. Empezamos con: 🪆<br>"
+            "2. Usamos Regla 1: 🔵 🪆 🔴<br>"
+            "3. La muñeca del medio la abrimos con Regla 2: 🔵 🔴<br>"
+            "4. Resultado final: 🔵🔵🔴🔴 = aabb<br><br>"
+            
+            "<i>¡Selecciona las reglas de abajo para empezar el juego!</i>"
         )
 
         # 5. Adición de Botones de seleccionar muñecas (reglas) al statusContentLayout
@@ -104,7 +150,7 @@ class GICModule(QWidget):
         self.derivation_step = 0
         self.derivation_history = []
         self.update_derivation_display()
-        self.ui.rulesDisplay.setText(" ")
+        self.ui.rulesDisplay.setText("🪆 ¡Empecemos! Selecciona una regla para abrir la primera muñeca.")
 
     # ======================================================================
     # PASO 4: FUNCIÓN AUXILIAR DE VISUALIZACIÓN
@@ -118,7 +164,11 @@ class GICModule(QWidget):
         
         if not self.derivation_history:
             # Texto guía al inicio
-            text += "1. Seleccione la primera muñeca (regla) para comenzar la derivación.\n"
+            text += "🪆 Pasos para abrir las muñecas:\n\n"
+            text += "1. Selecciona la regla que quieres usar\n"
+            text += "2. Observa qué aparece cuando abres la muñeca\n"
+            text += "3. Si hay otra 🪆, ¡puedes abrirla de nuevo!\n"
+            text += "4. Continúa hasta formar: aaabbb\n"
         else:
             # Lista de reglas aplicadas
             for i, rule in enumerate(self.derivation_history):
@@ -212,9 +262,12 @@ class GICModule(QWidget):
         Muestra un QMeessageBox con un mensaje de error de derivación.
         """
         self.show_dialog_message(
-            "¡Error!",
-            "La regla seleccionada es incorrecta para esta derivación. Intenta nuevamente.",
-            QMessageBox.Icon.Critical
+            "¡Ups! 🤔",
+            "Esa no es la muñeca correcta para abrir ahora.<br><br>"
+            "¡No te preocupes! Vamos a intentarlo de nuevo.<br><br>"
+            "💡 <b>Recuerda:</b> Necesitas formar el patrón <b>aaabbb</b><br>"
+            "Piensa qué regla te ayuda a hacer eso.",
+            QMessageBox.Icon.Warning
         )
         # El reinicio va después de mostrar el mensaje, en la función de manejo
         self.reset_derivation() # Mueve el reinicio aquí si no estaba.
@@ -262,7 +315,7 @@ class GICModule(QWidget):
             # Paso 3/3: Espera el Botón 3 (S → ab)
             self.derivation_step = 3
             is_correct = True
-            next_step_prompt = "¡Derivación completada!. Has generado la cadena aaabbb."
+            next_step_prompt = "\n✨ ¡Felicidades! ✨\n\nAbriste todas las muñecas correctamente.\nFormaste el patrón: aaabbb (🔵🔵🔵🔴🔴🔴)\n\n¡Ahora puedes ver el árbol mágico!"
             
         # --- Manejo de la Acción Correcta / Incorrecta ---
         
@@ -286,9 +339,12 @@ class GICModule(QWidget):
         if self.derivation_step < 3:
             # Derivación incompleta: Muestra la ventana emergente de error
             self.show_dialog_message(
-                "Derivación Incompleta", 
-                "Debes completar primero la derivación de la cadena 'aaabbb' (Paso 3) antes de ver el árbol.",
-                QMessageBox.Icon.Warning
+                "¡Todavía no! ⏳", 
+                "Primero debes terminar de abrir todas las muñecas 🪆<br><br>"
+                "Cuando hayas formado el patrón completo <b>aaabbb</b>,<br>"
+                "podrás ver el árbol mágico que muestra todo el proceso.<br><br>"
+                "¡Sigue abriendo muñecas usando las reglas de abajo!",
+                QMessageBox.Icon.Information
             )
         else:
             # Derivación completa: Muestra el mensaje de debug
@@ -323,11 +379,11 @@ class GICModule(QWidget):
             self.ui.derivationTextDisplay.setText(
                 f"Visualización del Árbol de Derivación:\n\n"
                 f"      S\n"
-                f"  /   |    \ \n"
+                f"  /   |    \\ \n"
                 f"a     S     b \n"
-                f"   /  |  \ \n"
+                f"   /  |  \\ \n"
                 f"  a   S   b \n"
-                f"    /   \ \n"
+                f"    /   \\ \n"
                 f"   a     b \n"
                 
             )
