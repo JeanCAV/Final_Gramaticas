@@ -1,76 +1,91 @@
-# main.py
 import sys
-from PySide6.QtWidgets import QApplication, QWidget
-from PySide6.QtCore import QSize, QEvent, Qt  # NUEVO: QEvent y Qt
-import qtawesome as qta
+from PySide6.QtWidgets import (QApplication, QMainWindow, QStackedWidget, QWidget, QVBoxLayout, QLabel, QPushButton)
+from PySide6.QtCore import Signal, Qt
 
-# Importa la clase de tu archivo generado
-from GUI.main_Window import Ui_MainMenu 
+# IMPORTACIONES DE MÓDULOS
+from GUI.menu_page import MenuPage 
+# Importamos la clase de controlador, no la clase de UI.
+from Modules.gic_module import GICModule # <--- ¡CAMBIO CLAVE!
 
-class MainWindow(QWidget):
+
+class ModulePlaceholder(QWidget):
+
+    back_requested = Signal() 
+
+    def __init__(self, title="Módulo en Construcción", parent=None):
+        super().__init__(parent)
+        
+        # Layout central y alineación
+        layout = QVBoxLayout(self)
+        layout.setAlignment(Qt.AlignCenter)
+        # Título del Placeholder
+        title_label = QLabel(f"{title} - En Construcción")
+        title_label.setAlignment(Qt.AlignCenter)
+        title_label.setStyleSheet("font-size: 24pt; font-weight: bold; color: #34495e;")
+        layout.addWidget(title_label)
+        # Botón de regreso
+        self.back_button = QPushButton("← Volver al Menú Principal")
+        self.back_button.setStyleSheet("background-color: #95a5a6; color: white; padding: 10px; border-radius: 8px;")
+        self.back_button.setMaximumWidth(300)
+        # Conexión del botón de regreso
+        self.back_button.clicked.connect(self.back_requested.emit)
+        layout.addWidget(self.back_button, alignment=Qt.AlignCenter)
+
+
+# 2. CLASE PRINCIPAL DE LA VENTANA 
+class MainWindow(QMainWindow):
+    """Ventana principal de la aplicación"""
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("Gramaticas y Maquina de Turing")
+        self.setGeometry(100, 100, 1000, 700) # Tamaño y posición inicial
+        self.setMinimumSize(800, 600)
+        self.setStyleSheet("QMainWindow { background-color: #f0f0f0; }")
+        self.stack = QStackedWidget()
+        self.setCentralWidget(self.stack)
+        # Inicializar y añadir todas las páginas al stack
+        self._init_pages()
+        # Conectar las señales de navegación entre páginas
+        self._connect_signals()
+        # Mostrar el menú al inicio
+        self.stack.setCurrentWidget(self.menu_page)
 
-        self.ui = Ui_MainMenu()
-        self.ui.setupUi(self) 
-
-        self.original_texts = {
-            self.ui.trainButton: " El Tren Mágico",
-            self.ui.gardenButton: " El Jardín Mágico",
-            self.ui.dollsButton: " Las Muñecas Rusas"
-        }
+    def _init_pages(self):
+        """Inicializa todas las vistas modulares"""
         
-        self.hover_texts = {
-            self.ui.trainButton: " Máquina de Turing",
-            self.ui.gardenButton: " Gramáticas Dependientes de Contexto",
-            self.ui.dollsButton: " Gramáticas Independientes de Contexto"
-        }
-
-        self.ui.trainButton.installEventFilter(self)
-        self.ui.gardenButton.installEventFilter(self)
-        self.ui.dollsButton.installEventFilter(self)
-        self.add_icons_and_fix_styles()
-        self.ui.trainButton.setMinimumHeight(100)
-        self.ui.gardenButton.setMinimumHeight(100)
-        self.ui.dollsButton.setMinimumHeight(100)
-
-
-    def eventFilter(self, watched, event):
-        if watched in self.original_texts:
-            if event.type() == QEvent.Type.Enter:
-                watched.setText(self.hover_texts[watched])
-
-            elif event.type() == QEvent.Type.Leave:
-                watched.setText(self.original_texts[watched])
-
-        return super().eventFilter(watched, event)
-
-
-    def add_icons_and_fix_styles(self):
-        icon_size = QSize(32, 32)
+        self.menu_page = MenuPage()
+        self.stack.addWidget(self.menu_page)
         
-        icon_train = qta.icon('fa5s.train', color='white')
-        self.ui.trainButton.setIcon(icon_train)
-        self.ui.trainButton.setIconSize(icon_size)
+        # 1. Módulo MT (Tren Mágico) - Usando Placeholder
+        self.mt_module = ModulePlaceholder("Módulo MT (Tren Mágico)")
+        self.stack.addWidget(self.mt_module)
+
+        # 2. Módulo GDC (Jardín Mágico) - Usando Placeholder
+        self.gdc_module = ModulePlaceholder("Módulo GDC (Jardín Mágico)")
+        self.stack.addWidget(self.gdc_module)
         
-        icon_garden = qta.icon('fa5s.seedling', color='white')
-        self.ui.gardenButton.setIcon(icon_garden)
-        self.ui.gardenButton.setIconSize(icon_size)
+        # 3. Módulo GIC (Muñecas Rusas) 
+        # Instanciamos el controlador GICModule
+        self.gic_module = GICModule() 
+        self.stack.addWidget(self.gic_module)
         
-        icon_doll = qta.icon('fa5s.user-circle', color='white')
-        self.ui.dollsButton.setIcon(icon_doll)
-        self.ui.dollsButton.setIconSize(icon_size)
+
+    def _connect_signals(self):
+        """logica para la navegación."""        
+        # Conexión del Menú para abrir Módulos
+        self.menu_page.train_clicked.connect(lambda: self.stack.setCurrentWidget(self.mt_module))
+        self.menu_page.garden_clicked.connect(lambda: self.stack.setCurrentWidget(self.gdc_module))
+        self.menu_page.dolls_clicked.connect(lambda: self.stack.setCurrentWidget(self.gic_module))
         
-        current_style = self.styleSheet() 
-        fixed_style = current_style.replace(
-            "text-align: center;", 
-            "text-align: left; padding-left: 25px;"
-        )
-        self.setStyleSheet(fixed_style)
+        # Conexión de los Módulos -> Navegar Hacia Atrás (Volver al menú)
+        self.mt_module.back_requested.connect(lambda: self.stack.setCurrentWidget(self.menu_page))
+        self.gdc_module.back_requested.connect(lambda: self.stack.setCurrentWidget(self.menu_page))
+        # Conexión del botón de regreso del módulo GIC (ahora gestionado por GICModule)
+        self.gic_module.back_requested.connect(lambda: self.stack.setCurrentWidget(self.menu_page))
 
 
+# 3. FUNCIÓN DE INICIO
 def main():
-    """Función principal para lanzar la app."""
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
