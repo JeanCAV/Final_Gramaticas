@@ -94,7 +94,6 @@ class Ui_MainMenu(object):
         font.setBold(True)
         self.trainButton.setFont(font)
         self.trainButton.setIconSize(QSize(32, 32))
-        self.trainButton.setStyleSheet("text-align: center; qproperty-iconAlignment: AlignCenter;")
 
 
         self.mainLayout.addWidget(self.trainButton)
