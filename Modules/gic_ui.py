@@ -497,15 +497,15 @@ class GIC_Module(QWidget):
         # --- REGLAS: Se establecen los textos reales (para la lógica) y se crean los iconos ---
         
         # Regla 1 (Paso 1): S → a S b
-        rule1_text = QCoreApplication.translate("GIC_Module", u"🪆 → 🔵 🪆 🔴  (a S b)", None)
+        rule1_text = QCoreApplication.translate("GIC_Module", u"S → a S b", None)
         self.actionButton1.setText(rule1_text) 
         
         # Regla 2 (Paso 2): S → a S b (Corregido)
-        rule2_text = QCoreApplication.translate("GIC_Module", u"🪆 → 🔵 🪆 🔴  (a S b)", None) 
+        rule2_text = QCoreApplication.translate("GIC_Module", u"S → a S b", None) 
         self.actionButton2.setText(rule2_text) 
         
         # Regla 3 (Paso 3): S → a b (Corregido)
-        rule3_text = QCoreApplication.translate("GIC_Module", u"🪆 → 🔵 🔴  (a b)", None) 
+        rule3_text = QCoreApplication.translate("GIC_Module", u"S → a b", None) 
         self.actionButton3.setText(rule3_text) 
 
         # Regla 4: Mantenemos el texto original

@@ -30,64 +30,32 @@ class MTModule(QWidget):
         self.ui.theoryTextDisplay.setText(
             "<h2>🚂 El Tren Mágico que Ordena Juguetes</h2><br>"
             
-            "<b>¿De qué trata este juego?</b><br>"
-            "Imagina un tren mágico con 10 vagones. En cada vagón hay "
-            "juguetes de colores que están desordenados. ¡El tren mágico "
-            "los va a ordenar!<br><br>"
-            
             "<b>🎨 Los Juguetes:</b><br>"
             "• <span style='font-size:20pt'>🔴</span> = Pelota Roja<br>"
             "• <span style='font-size:20pt'>🔵</span> = Pelota Azul<br>"
             "• <span style='font-size:20pt'>□</span> = Vagón vacío<br><br>"
             
-            "<b>🎮 ¿Cómo jugar?</b><br><br>"
+            "<b>🎮 ¿Cómo jugar?</b><br>"
+            "1. Mira los vagones del tren en el centro<br>"
+            "2. La casilla naranja 🟧 muestra dónde está la cabeza del tren<br>"
+            "3. Presiona '➡️ Siguiente Paso' para ver cómo ordena<br>"
+            "4. Observa cómo cambia las pelotas de lugar<br><br>"
             
-            "<b>Paso 1:</b> Mira los vagones del tren en el centro<br>"
-            "Verás las pelotas desordenadas: 🔴🔵🔴🔵<br><br>"
+            "<b>🎯 Meta:</b> Ordenar las pelotas<br>"
+            "De: 🔴🔵🔴🔵🔴🔵🔴🔵 → A: 🔴🔴🔴🔴🔵🔵🔵🔵<br><br>"
             
-            "<b>Paso 2:</b> Observa la casilla naranja 🟧<br>"
-            "Esa es la cabeza del tren. Ahí está mirando el tren ahora mismo<br><br>"
-            
-            "<b>Paso 3:</b> Presiona el botón verde '➡️ Siguiente Paso'<br>"
-            "¡El tren moverá las pelotas para ordenarlas!<br><br>"
-            
-            "<b>Paso 4:</b> Sigue presionando 'Siguiente Paso'<br>"
-            "Observa cómo el tren cambia las pelotas de lugar<br><br>"
-            
-            "<b>Paso 5:</b> Al final verás todas las rojas juntas<br>"
-            "Y todas las azules juntas: 🔴🔴🔵🔵<br><br>"
-            
-            "<b>💡 ¿Qué hace el Tren Mágico?</b><br>"
-            "El tren tiene una cabeza inteligente que puede:<br>"
+            "<b>💡 El Tren Mágico puede:</b><br>"
             "1. <b>👀 Ver</b> qué pelota hay en el vagón<br>"
             "2. <b>✏️ Cambiar</b> la pelota por otra<br>"
             "3. <b>🚂 Moverse</b> al siguiente vagón (← o →)<br><br>"
             
-            "El tren sigue reglas especiales para saber qué hacer:<br>"
-            "• Si veo pelota roja 🔴 → haz esto<br>"
-            "• Si veo pelota azul 🔵 → haz aquello<br><br>"
-            
-            "<b>🎯 Tu Meta:</b><br>"
-            "Ver cómo el tren ordena las pelotas paso a paso<br>"
-            "De: 🔴🔵🔴🔵 → A: 🔴🔴🔵🔵<br><br>"
-            
             "<b>🎓 ¿Qué es una Máquina de Turing?</b><br>"
-            "Este tren mágico es una <b>Máquina de Turing</b>, inventada por "
-            "un señor muy inteligente llamado Alan Turing hace muchos años.<br><br>"
+            "Este tren es una <b>Máquina de Turing</b>, inventada por Alan Turing.<br>"
+            "Es como una computadora muy simple que puede leer, escribir y moverse.<br><br>"
             
-            "Una Máquina de Turing es como una computadora súper simple que puede:<br>"
-            "• Leer y escribir cosas en una cinta (nuestros vagones 🚃)<br>"
-            "• Moverse por la cinta para ver cada parte<br>"
-            "• Seguir reglas para resolver problemas<br><br>"
+            "¡Todas las computadoras del mundo funcionan con este principio!<br><br>"
             
-            "¡Todas las computadoras del mundo (tu celular, tablets, videojuegos) "
-            "funcionan con este mismo principio que inventó Alan Turing!<br><br>"
-            
-            "<b>✨ Dato curioso:</b><br>"
-            "Alan Turing usó esta idea para ayudar en la Segunda Guerra Mundial "
-            "y después ayudó a crear las primeras computadoras. ¡Es un héroe de la ciencia!<br><br>"
-            
-            "<i>¡Presiona el botón verde '➡️ Siguiente Paso' para ver la magia!</i>"
+            "<i>Presiona '➡️ Siguiente Paso' para comenzar</i>"
         )
         
         # ======================================================================
@@ -95,7 +63,7 @@ class MTModule(QWidget):
         # ======================================================================
         
         # Cinta de 10 posiciones - agregamos un marcador especial al inicio
-        self.tape = ['▶', 'R', 'A', 'R', 'A', '□', '□', '□', '□', '□']
+        self.tape = ['▶', 'R', 'A', 'R', 'A', 'R', 'A', 'R', 'A', '□']
         self.head_position = 1  # Empezamos en posición 1 (después del marcador)
         self.current_state = 'q0'
         self.step_count = 0
@@ -223,7 +191,7 @@ class MTModule(QWidget):
 
     def reset_machine(self):
         """Reinicia la Máquina de Turing al estado inicial."""
-        self.tape = ['▶', 'R', 'A', 'R', 'A', '□', '□', '□', '□', '□']
+        self.tape = ['▶', 'R', 'A', 'R', 'A', 'R', 'A', 'R', 'A', '□']
         self.head_position = 1
         self.current_state = 'q0'
         self.step_count = 0
@@ -232,7 +200,7 @@ class MTModule(QWidget):
         self.show_info_message(
             "¡Listo para Empezar! 🚂",
             "El tren volvió al inicio con las pelotas desordenadas.<br><br>"
-            "Las pelotas están así: 🔴🔵🔴🔵<br><br>"
+            "Las pelotas están así: 🔴🔵🔴🔵🔴🔵🔴🔵<br><br>"
             "Presiona el botón verde '➡️ Siguiente Paso'<br>"
             "para ver cómo el tren las ordena"
         )
@@ -251,13 +219,16 @@ class MTModule(QWidget):
             # Marcar cabezal
             if i == self.head_position:
                 cell.setProperty("isHead", "true")
-                cell.setStyleSheet(cell.styleSheet())  # Forzar actualización
             else:
                 cell.setProperty("isHead", "false")
-                cell.setStyleSheet(cell.styleSheet())
+            
+            # Forzar actualización del estilo
+            cell.style().unpolish(cell)
+            cell.style().polish(cell)
+            cell.update()
         
         # Actualizar labels con información más clara
-        self.ui.headPositionLabel.setText(f"🟧 La cabeza del tren está mirando el vagón número: {self.head_position + 1}")
+        self.ui.headPositionLabel.setText(f"🟧 La cabeza del tren está mirando el vagón número: {self.head_position}")
         self.ui.stateLabel.setText(f"🎯 Qué está haciendo: {self.format_state(self.current_state)}")
         self.ui.stepCounterLabel.setText(f"📊 Pasos completados: {self.step_count}")
         
@@ -269,37 +240,26 @@ class MTModule(QWidget):
 
     def update_instructions_display(self):
         """Muestra la tabla de instrucciones."""
-        text = "<h3>📋 ¿Cómo Ordena el Tren las Pelotas?</h3><br>"
-        text += "<b>El tren sigue estas reglas mágicas:</b><br><br>"
+        text = "<h3>📋 ¿Cómo Ordena el Tren?</h3><br>"
         
         text += "<b>🔍 Buscando Rojas:</b><br>"
-        text += "El tren busca pelotas rojas 🔴 para ponerlas al inicio<br>"
-        text += "• Si encuentra 🔴 → La marca con ✖️ y avanza →<br>"
-        text += "• Si encuentra 🔵 → Solo avanza →<br>"
-        text += "• Si encuentra □ → Ya terminó, ¡felicidades!<br><br>"
+        text += "• Encuentra 🔴 → La marca con ✖️ y avanza →<br>"
+        text += "• Encuentra 🔵 → Solo avanza →<br>"
+        text += "• Encuentra □ → Termina<br><br>"
         
-        text += "<b>🔄 Buscando Azul para Intercambiar:</b><br>"
-        text += "Después de marcar una roja, busca una azul<br>"
-        text += "• Si encuentra 🔴 → Sigue buscando →<br>"
-        text += "• Si encuentra 🔵 → ¡La cambia por 🔴! y regresa ←<br>"
-        text += "• Si encuentra □ → Empieza a limpiar las marcas ←<br><br>"
+        text += "<b>🔄 Buscando Azul:</b><br>"
+        text += "• Encuentra 🔴 → Sigue buscando →<br>"
+        text += "• Encuentra 🔵 → ¡La cambia por 🔴! y regresa ←<br><br>"
         
-        text += "<b>⬅️ Regresando a la Marca:</b><br>"
-        text += "El tren regresa para completar el intercambio<br>"
-        text += "• Sigue regresando ← hasta encontrar la marca ✖️<br>"
-        text += "• Cuando encuentra ✖️ → Pone la 🔵 ahí y continúa →<br><br>"
+        text += "<b>⬅️ Regresando:</b><br>"
+        text += "• Vuelve hasta encontrar la marca ✖️<br>"
+        text += "• Cuando la encuentra → Pone 🔵 ahí<br><br>"
         
-        text += "<b>🧹 Limpiando Marcas:</b><br>"
-        text += "Al final, cambia todas las ✖️ por 🔴<br>"
-        text += "• Cada ✖️ se convierte en 🔴<br>"
-        text += "• Cuando llega a □ → ¡Todo listo!<br><br>"
+        text += "<b>🧹 Limpiando:</b><br>"
+        text += "• Cambia todas las ✖️ por 🔴<br>"
+        text += "• Al llegar al inicio → ¡Listo!<br><br>"
         
-        text += "<b>🎯 Resultado Final:</b><br>"
-        text += "Todas las pelotas rojas 🔴🔴 quedan juntas al inicio<br>"
-        text += "Y todas las azules 🔵🔵 quedan juntas al final<br><br>"
-        
-        text += "<b>💡 Observa:</b> La casilla naranja 🟧 te muestra dónde está "
-        text += "mirando el tren en cada momento."
+        text += "<b>🎯 Resultado:</b> Todas las 🔴 juntas, todas las 🔵 juntas"
         
         self.ui.instructionsDisplay.setText(text)
 

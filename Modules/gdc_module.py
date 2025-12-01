@@ -30,66 +30,31 @@ class GDCModule(QWidget):
         self.ui.theoryTextDisplay.setText(
             "<h2>🌱 El Jardín Mágico que Crece Junto</h2><br>"
             
-            "<b>¿De qué trata este juego?</b><br>"
-            "Imagina que tienes un jardín mágico. En este jardín especial, "
-            "las plantas solo pueden crecer si tienen las amigas correctas a su lado. "
-            "¡Las plantas necesitan estar juntas para crecer!<br><br>"
+            "<b>🌱 Las Plantas:</b><br>"
+            "• <span style='font-size:20pt'>🌱</span> = Semilla mágica (S)<br>"
+            "• <span style='font-size:20pt'>🌿</span> = Planta verde (a)<br>"
+            "• <span style='font-size:20pt'>🌸</span> = Flor rosada (b)<br><br>"
             
-            "<b>🌱 Las Semillas y Plantas:</b><br>"
-            "• <span style='font-size:20pt'>🌱</span> = Una semilla mágica (la llamamos 'S')<br>"
-            "• <span style='font-size:20pt'>🌿</span> = Una planta verde (la llamamos 'a')<br>"
-            "• <span style='font-size:20pt'>🌸</span> = Una flor rosada (la llamamos 'b')<br><br>"
+            "<b>🎮 ¿Cómo jugar?</b><br>"
+            "1. Elige un nivel (Nivel 1 o 2)<br>"
+            "2. Mira tu semilla 🌱 en el centro<br>"
+            "3. Presiona '⏩ Siguiente Fase' para verla crecer<br>"
+            "4. Sigue hasta tener el patrón completo<br>"
+            "5. Presiona '✓ Validar' para verificar<br><br>"
             
-            "<b>🎮 ¿Cómo jugar?</b><br><br>"
-            
-            "<b>Paso 1:</b> Elige un nivel abajo a la derecha<br>"
-            "• <b>Nivel 1:</b> Más fácil, para aprender<br>"
-            "• <b>Nivel 2:</b> Un poquito más difícil<br><br>"
-            
-            "<b>Paso 2:</b> Mira tu jardín en el centro de la pantalla<br>"
-            "Verás tu semilla 🌱 lista para crecer<br><br>"
-            
-            "<b>Paso 3:</b> Presiona el botón verde '⏩ Siguiente Fase'<br>"
-            "¡La semilla crecerá y aparecerán más plantas!<br><br>"
-            
-            "<b>Paso 4:</b> Sigue presionando 'Siguiente Fase'<br>"
-            "Observa cómo las plantas crecen juntas siguiendo las reglas mágicas<br><br>"
-            
-            "<b>Paso 5:</b> Cuando termines, presiona '✓ Validar'<br>"
-            "Para ver si tu jardín está perfecto y balanceado<br><br>"
+            "<b>🎯 Meta:</b> Formar 🌿🌿🌿🌸🌸🌸 (aaabbb)<br><br>"
             
             "<b>💡 La Magia del Jardín:</b><br>"
-            "En este jardín especial, cuando hay una semilla 🌱, ella puede crecer y "
-            "crear una planta verde 🌿 a su izquierda y una flor rosada 🌸 a su derecha. "
-            "¡Así el jardín crece por ambos lados al mismo tiempo!<br><br>"
-            
-            "<b>🎯 Tu Meta:</b><br>"
-            "Hacer crecer el jardín hasta tener 3 plantas verdes 🌿🌿🌿 "
-            "seguidas de 3 flores rosadas 🌸🌸🌸<br><br>"
+            "En este jardín, las plantas miran a sus vecinas antes de crecer.<br>"
+            "¡Necesitan compañía para transformarse!<br><br>"
             
             "<b>🎓 ¿Por qué es Dependiente de Contexto?</b><br>"
-            "Imagina que tienes una semilla 🌱 en tu jardín.<br><br>"
+            "Las plantas miran quién está a su lado (su contexto) antes de crecer.<br><br>"
             
-            "En un jardín normal, la semilla crecería igual sin importar qué hay alrededor. "
-            "¡Pero este es un jardín MÁGICO!<br><br>"
+            "<b>Nivel 1:</b> 🌸🌱🌸 → 🌸🌿🌸 (necesita estar entre flores)<br>"
+            "<b>Nivel 2:</b> 🌿🌱 → 🌿🌿🌸 (necesita una planta verde al lado)<br><br>"
             
-            "Aquí, la semilla <b>mira a sus vecinas</b> antes de decidir cómo crecer:<br>"
-            "• Si tiene amigas específicas cerca (como 🌿 o 🌸), crece de una manera<br>"
-            "• Si está sola, crece de otra manera diferente<br><br>"
-            
-            "<b>Ejemplo en Nivel 2:</b><br>"
-            "• Si tenemos: 🌿🌱 (planta verde al lado de semilla)<br>"
-            "  → La semilla dice: '¡Tengo una amiga 🌿! Voy a crear una flor 🌸'<br>"
-            "  → Resultado: 🌿🌱🌸<br><br>"
-            
-            "• Pero si tenemos solo: 🌱 (semilla sola)<br>"
-            "  → La semilla dice: 'Estoy sola, voy a hacer algo diferente'<br>"
-            "  → Resultado: 🌿🌸<br><br>"
-            
-            "Esto se llama <b>'Dependiente de Contexto'</b> porque las transformaciones "
-            "<b>dependen del contexto</b> (de lo que hay alrededor).<br><br>"
-            
-            "<i>¡Presiona 'Nivel 1' para empezar tu aventura!</i>"
+            "<i>¡Elige un nivel para empezar!</i>"
         )
         
         # Estado del módulo

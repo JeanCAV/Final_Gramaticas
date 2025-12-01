@@ -27,77 +27,39 @@ class GICModule(QWidget):
         self.ui.theoryTextDisplay.setText(
             "<h2>🪆 Las Muñecas Rusas Mágicas</h2><br>"
             
-            "<b>¿De qué trata este juego?</b><br>"
-            "Imagina que tienes una muñeca rusa mágica. Las muñecas rusas son esas "
-            "muñequitas que se abren y dentro tienen otra muñequita más pequeña, "
-            "y esa tiene otra, ¡y así hasta llegar a la más chiquitita!<br><br>"
-            
-            "<b>🎨 Las Muñecas Especiales:</b><br>"
-            "En este juego, cada muñeca tiene letras pintadas:<br>"
+            "<b>🎨 Las Muñecas:</b><br>"
             "• <span style='font-size:16pt; color:#3498db'>🔵 a</span> = Letra azul (a)<br>"
             "• <span style='font-size:16pt; color:#e74c3c'>🔴 b</span> = Letra roja (b)<br>"
             "• <span style='font-size:16pt'>🪆 S</span> = Muñeca que se puede abrir<br><br>"
             
-            "<b>🎮 ¿Cómo jugar?</b><br><br>"
+            "<b>🎮 ¿Cómo jugar?</b><br>"
+            "1. Empieza con la muñeca grande 🪆<br>"
+            "2. Elige una regla de abajo para abrirla<br>"
+            "3. Cada 🪆 que veas, puedes abrirla otra vez<br>"
+            "4. Cuando no queden 🪆, ¡terminaste!<br><br>"
             
-            "<b>Paso 1:</b> Empieza con la muñeca grande 🪆<br>"
-            "Mira los botones de reglas abajo y elige cómo abrirla<br><br>"
+            "<b>🎯 Meta:</b> Formar <b>aaabbb</b> (🔵🔵🔵🔴🔴🔴)<br><br>"
             
-            "<b>Paso 2:</b> Cada vez que abras una muñeca, aparecerán letras<br>"
-            "• Algunas son letras de colores que ya están listas 🔵🔴<br>"
-            "• Otras son muñecas 🪆 que puedes seguir abriendo<br><br>"
-            
-            "<b>Paso 3:</b> Sigue abriendo muñecas<br>"
-            "Cada vez que veas una 🪆, puedes abrirla con otra regla<br><br>"
-            
-            "<b>Paso 4:</b> Cuando ya no queden muñecas 🪆 por abrir<br>"
-            "¡Habrás formado tu patrón de letras!<br><br>"
-            
-            "<b>🎯 Tu Misión:</b><br>"
-            "Formar el patrón: <b>a a a b b b</b><br>"
-            "Tres letras azules 🔵🔵🔵 seguidas de tres letras rojas 🔴🔴🔴<br><br>"
-            
-            "<b>💡 Las Reglas Mágicas:</b><br>"
-            "Hay 2 reglas para abrir las muñecas:<br><br>"
-            
+            "<b>💡 Las Reglas:</b><br>"
             "<b>Regla 1: 🪆 → 🔵 🪆 🔴</b><br>"
-            "Si abres la muñeca con esta regla, aparece:<br>"
-            "• Una letra azul 🔵 (a)<br>"
-            "• Otra muñeca 🪆 en el medio<br>"
-            "• Una letra roja 🔴 (b)<br><br>"
+            "Aparece una letra azul, otra muñeca, y una letra roja<br><br>"
             
             "<b>Regla 2: 🪆 → 🔵 🔴</b><br>"
-            "Si abres la muñeca con esta regla, aparece:<br>"
-            "• Una letra azul 🔵 (a)<br>"
-            "• Una letra roja 🔴 (b)<br>"
-            "¡Y ya no hay más muñecas por abrir!<br><br>"
+            "Aparece una letra azul y una roja (¡no hay más muñecas!)<br><br>"
             
             "<b>🎓 ¿Qué es una Gramática Independiente de Contexto?</b><br>"
-            "Este juego de muñecas rusas es una <b>Gramática Independiente de Contexto (GIC)</b>.<br><br>"
+            "Cada muñeca 🪆 se abre de la misma manera, sin importar qué hay alrededor.<br>"
+            "No necesita mirar a sus vecinas.<br><br>"
             
-            "¿Por qué se llama 'Independiente de Contexto'?<br>"
-            "Porque cada muñeca 🪆 se puede abrir de la misma manera, "
-            "sin importar qué haya alrededor de ella. No necesita mirar a sus vecinas.<br><br>"
+            "En cambio, en el Jardín Mágico las plantas SÍ miran a sus vecinas. "
+            "¡Esa es la diferencia!<br><br>"
             
-            "En cambio, en el Jardín Mágico (que ya jugaste) las plantas SÍ miraban "
-            "a sus vecinas antes de crecer. ¡Esa es la diferencia!<br><br>"
+            "<b>💭 Para qué sirve:</b><br>"
+            "• Lenguajes de programación<br>"
+            "• Compiladores de Python, Java, etc.<br>"
+            "• Análisis gramatical de frases<br><br>"
             
-            "<b>💭 ¿Para qué sirve esto?</b><br>"
-            "Las GIC se usan para:<br>"
-            "• Entender cómo funcionan los lenguajes de programación<br>"
-            "• Crear traductores que convierten código a lenguaje de máquina<br>"
-            "• Analizar si una frase está bien escrita gramaticalmente<br><br>"
-            
-            "¡Los compiladores de Python, Java y otros lenguajes usan GIC!<br><br>"
-            
-            "<b>✨ Ejemplo paso a paso:</b><br>"
-            "Para formar <b>aabb</b> hacemos:<br>"
-            "1. Empezamos con: 🪆<br>"
-            "2. Usamos Regla 1: 🔵 🪆 🔴<br>"
-            "3. La muñeca del medio la abrimos con Regla 2: 🔵 🔴<br>"
-            "4. Resultado final: 🔵🔵🔴🔴 = aabb<br><br>"
-            
-            "<i>¡Selecciona las reglas de abajo para empezar el juego!</i>"
+            "<i>¡Selecciona una regla de abajo para comenzar!</i>"
         )
 
         # 5. Adición de Botones de seleccionar muñecas (reglas) al statusContentLayout
