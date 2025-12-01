@@ -42,7 +42,9 @@ class GDCModule(QWidget):
             "4. Sigue hasta tener el patrón completo<br>"
             "5. Presiona '✓ Validar' para verificar<br><br>"
             
-            "<b>🎯 Meta:</b> Formar 🌿🌿🌿🌸🌸🌸 (aaabbb)<br><br>"
+            "<b>🎯 Metas:</b><br>"
+            "• Nivel 1: Formar 🌿🌿🌿🌸🌸🌸🌸🌸🌸 (aaabbbbbb - 3 plantas, 6 flores)<br>"
+            "• Nivel 2: Formar 🌿🌿🌿🌸🌸🌸 (aaabbb - 3 plantas, 3 flores)<br><br>"
             
             "<b>💡 La Magia del Jardín:</b><br>"
             "En este jardín, las plantas miran a sus vecinas antes de crecer.<br>"
@@ -72,20 +74,20 @@ class GDCModule(QWidget):
         # DEFINICIÓN DE NIVELES Y REGLAS
         # ======================================================================
         
-        # NIVEL 1: Patrón simple con dependencia de contexto básica
+        # NIVEL 1: Patrón con expansión múltiple (3a : 6b)
         self.level1_rules = [
-            ("bSb", "bab"),    # Contexto: S entre dos b se convierte en 'a'
-            ("S", "bSb"),      # S se expande a bSb
+            ("S", "aSbb"),     # S se expande a aSbb (1a + 2b)
         ]
         self.level1_initial = "S"
-        self.level1_target = "bbabbb"
+        self.level1_target = "aaabbbbbb"  # 3 expansiones: aSbb -> aaSbbbb -> aaaSbbbbbb
         
         # NIVEL 2: Patrón a^n b^n con dependencia de contexto más compleja
         self.level2_rules = [
             ("aS", "aSb"),    # Contexto: si hay 'a' antes de S, añade 'b' después
-            ("S", "ab"),      # Caso base
+            ("S", "aS"),      # Primera expansión: S -> aS
+            ("aS", "ab"),     # Caso base cuando ya no queremos más
         ]
-        self.level2_initial = "aS"
+        self.level2_initial = "S"
         self.level2_target = "aaabbb"
         
         # ======================================================================
@@ -124,29 +126,28 @@ class GDCModule(QWidget):
             self.ui.rulesDisplay.setText(
                 "<h3>✨ Reglas Mágicas del Nivel 1:</h3><br>"
                 
-                "<b>🔮 Regla Especial (con Vecinas):</b><br>"
-                "Si una semilla 🌱 está <b>rodeada de dos flores rosadas</b> 🌸🌱🌸, "
-                "entonces algo mágico pasa:<br>"
-                "• Las flores 🌸 de los lados se quedan<br>"
-                "• La semilla 🌱 se convierte en una planta verde 🌿<br><br>"
+                "<b>🔮 Regla de Crecimiento:</b><br>"
+                "Cada vez que hay una semilla 🌱, crece así:<br>"
+                "• Aparece 1 planta verde 🌿 a la izquierda<br>"
+                "• La semilla 🌱 se mantiene en el centro<br>"
+                "• Aparecen 2 flores rosadas 🌸🌸 a la derecha<br><br>"
                 
-                "Ejemplo: 🌸🌱🌸 se convierte en 🌸🌿🌸<br><br>"
+                "Ejemplo: 🌱 se convierte en 🌿🌱🌸🌸<br><br>"
                 
-                "<b>Regla Normal:</b><br>"
-                "Si la semilla 🌱 está sola (sin vecinas), se expande a: 🌸🌱🌸<br><br>"
+                "<b>📖 Proceso completo (3 veces):</b><br>"
+                "1️⃣ 🌱 → 🌿🌱🌸🌸<br>"
+                "2️⃣ 🌿🌱🌸🌸 → 🌿🌿🌱🌸🌸🌸🌸<br>"
+                "3️⃣ 🌿🌿🌱🌸🌸🌸🌸 → 🌿🌿🌿🌱🌸🌸🌸🌸🌸🌸<br>"
+                "4️⃣ Finalmente la 🌱 desaparece → 🌿🌿🌿🌸🌸🌸🌸🌸🌸<br><br>"
+                
+                "<b>Resultado final:</b> 3 plantas 🌿 + 6 flores 🌸 (ratio 1:2)<br><br>"
                 
                 "<b>🎓 ¿Por qué es Dependiente de Contexto?</b><br>"
-                "¡Fíjate bien! La semilla 🌱 cambia de manera diferente dependiendo "
-                "de si tiene vecinas flores 🌸 o no.<br><br>"
-                
-                "• <b>Con contexto</b> (🌸🌱🌸): Se convierte en 🌿 (planta verde)<br>"
-                "• <b>Sin contexto</b> (🌱 sola): Se expande a 🌸🌱🌸<br><br>"
-                
-                "¡La transformación <b>DEPENDE</b> de lo que está alrededor! "
-                "Por eso se llama <b>Dependiente de Contexto</b>.<br><br>"
+                "En este nivel, cada semilla crece añadiendo elementos a ambos lados, "
+                "manteniendo siempre la proporción de 1 planta por cada 2 flores.<br><br>"
                 
                 "<b>📝 Consejo:</b><br>"
-                "Observa bien cómo la semilla 'mira' a sus vecinas antes de crecer."
+                "Observa cómo en cada fase se añade 1🌿 a la izquierda y 2🌸 a la derecha."
             )
         elif level == 2:
             self.current_garden = self.level2_initial
@@ -226,31 +227,46 @@ class GDCModule(QWidget):
         
         # Aplicar reglas según el nivel
         if self.current_level == 1:
-            # Nivel 1: Dependencia de contexto con bSb
-            if "bSb" in self.current_garden:
-                # Aplicar bSb → bab (con contexto: S rodeada de 'b')
-                self.current_garden = self.current_garden.replace("bSb", "bab", 1)
-                self.add_to_history(f"✨ La semilla 🌱 estaba rodeada de flores 🌸, se convirtió en planta 🌿")
+            # Nivel 1: Expansión múltiple S → aSbb (se repite 3 veces)
+            # Secuencia: S -> aSbb -> aaSbbbb -> aaaSbbbbbb -> aaabbbbbb (3 expansiones + eliminar S)
+            if self.phase_count < 3 and "S" in self.current_garden:
+                # Fases 1-3: expandir S → aSbb
+                self.current_garden = self.current_garden.replace("S", "aSbb", 1)
+                self.add_to_history(f"🌱 La semilla creció: apareció 1 planta 🌿 a la izquierda y 2 flores 🌸🌸 a la derecha")
                 transformed = True
-            elif "S" in self.current_garden:
-                # Aplicar S → bSb (expandir)
-                self.current_garden = self.current_garden.replace("S", "bSb", 1)
-                self.add_to_history(f"🌱 La semilla creció: aparecieron flores 🌸 a ambos lados")
+            elif self.phase_count >= 3 and "S" in self.current_garden:
+                # Fase 4: eliminar S final
+                self.current_garden = self.current_garden.replace("S", "", 1)
+                self.add_to_history(f"✨ La semilla 🌱 se transformó completamente (terminado)")
                 transformed = True
         
         elif self.current_level == 2:
-            # Nivel 2: Dependiente de contexto (limitado a 3 fases)
-            if self.phase_count < 2:
-                # Fases 1 y 2: Aplicar aS → aSb (añadir más 'b')
-                if "aS" in self.current_garden:
-                    self.current_garden = self.current_garden.replace("aS", "aSb", 1)
-                    self.add_to_history(f"✨ La semilla 🌱 tenía una amiga 🌿, entonces apareció 🌸 al final")
+            # Nivel 2: Dependiente de contexto para generar a^n b^n (3 a's y 3 b's)
+            # Secuencia: S -> aSb -> aaSbb -> aaaSbbb -> aaabbb
+            # En la PRIMERA fase salen juntas la planta y la flor
+            if self.phase_count == 0:
+                # Fase 1: S → aSb (planta Y flor juntas desde el inicio)
+                if "S" in self.current_garden and "a" not in self.current_garden:
+                    self.current_garden = self.current_garden.replace("S", "aSb", 1)
+                    self.add_to_history(f"🌱 La semilla creció: aparecieron juntas una planta 🌿 y una flor 🌸")
                     transformed = True
-            else:
-                # Fase 3: Terminar con S → ab
-                if "S" in self.current_garden:
-                    self.current_garden = self.current_garden.replace("S", "ab", 1)
-                    self.add_to_history(f"🌱 La semilla se convirtió en 🌿🌸 (terminado)")
+            elif self.phase_count == 1:
+                # Fase 2: aSb → aaSbb (crecen JUNTAS: +1 planta y +1 flor)
+                if "aSb" in self.current_garden:
+                    self.current_garden = self.current_garden.replace("aSb", "aaSbb", 1)
+                    self.add_to_history(f"✨ Crecieron juntas: otra planta 🌿 y otra flor 🌸")
+                    transformed = True
+            elif self.phase_count == 2:
+                # Fase 3: aaSbb → aaaSbbb (crecen JUNTAS: +1 planta y +1 flor)
+                if "aaSbb" in self.current_garden:
+                    self.current_garden = self.current_garden.replace("aaSbb", "aaaSbbb", 1)
+                    self.add_to_history(f"✨ Crecieron juntas: la última planta 🌿 y la última flor 🌸")
+                    transformed = True
+            elif self.phase_count == 3:
+                # Fase 4: aaaSbbb → aaabbb (eliminar semilla)
+                if "aaaSbbb" in self.current_garden:
+                    self.current_garden = self.current_garden.replace("aaaSbbb", "aaabbb", 1)
+                    self.add_to_history(f"🌱 La semilla se convirtió en flor 🌸 (terminado)")
                     transformed = True
         
         if transformed:
