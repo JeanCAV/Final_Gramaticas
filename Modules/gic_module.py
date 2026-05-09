@@ -25,41 +25,15 @@ class GICModule(QWidget):
         
         # 4. Configuración inicial de textos y componentes
         self.ui.theoryTextDisplay.setText(
-            "<h2>🪆 Las Muñecas Rusas Mágicas</h2><br>"
-            
-            "<b>🎨 Las Muñecas:</b><br>"
-            "• <span style='font-size:16pt; color:#3498db'>🔵 a</span> = Letra azul (a)<br>"
-            "• <span style='font-size:16pt; color:#e74c3c'>🔴 b</span> = Letra roja (b)<br>"
-            "• <span style='font-size:16pt'>🪆 S</span> = Muñeca que se puede abrir<br><br>"
-            
-            "<b>🎮 ¿Cómo jugar?</b><br>"
-            "1. Empieza con la muñeca grande 🪆<br>"
-            "2. Elige una regla de abajo para abrirla<br>"
-            "3. Cada 🪆 que veas, puedes abrirla otra vez<br>"
-            "4. Cuando no queden 🪆, ¡terminaste!<br><br>"
-            
-            "<b>🎯 Meta:</b> Formar <b>aaabbb</b> (🔵🔵🔵🔴🔴🔴)<br><br>"
-            
-            "<b>💡 Las Reglas:</b><br>"
-            "<b>Regla 1: 🪆 → 🔵 🪆 🔴</b><br>"
-            "Aparece una letra azul, otra muñeca, y una letra roja<br><br>"
-            
-            "<b>Regla 2: 🪆 → 🔵 🔴</b><br>"
-            "Aparece una letra azul y una roja (¡no hay más muñecas!)<br><br>"
-            
-            "<b>🎓 ¿Qué es una Gramática Independiente de Contexto?</b><br>"
-            "Cada muñeca 🪆 se abre de la misma manera, sin importar qué hay alrededor.<br>"
-            "No necesita mirar a sus vecinas.<br><br>"
-            
-            "En cambio, en el Jardín Mágico las plantas SÍ miran a sus vecinas. "
-            "¡Esa es la diferencia!<br><br>"
-            
-            "<b>💭 Para qué sirve:</b><br>"
-            "• Lenguajes de programación<br>"
-            "• Compiladores de Python, Java, etc.<br>"
-            "• Análisis gramatical de frases<br><br>"
-            
-            "<i>¡Selecciona una regla de abajo para comenzar!</i>"
+            "<h2>🪆 Muñecas Rusas</h2><br>"
+            "<b>Objetivo:</b> formar <b>aaabbb</b>.<br><br>"
+            "<b>Piezas:</b> 🪆 S = muñeca que se abre, 🔵 a = azul, 🔴 b = roja.<br><br>"
+            "<b>Cómo usarlo:</b><br>"
+            "1. Elige una regla.<br>"
+            "2. Abre la muñeca paso a paso.<br>"
+            "3. Sigue hasta que no quede ninguna 🪆.<br><br>"
+            "<b>Idea clave:</b> cada muñeca se abre igual sin importar lo que hay alrededor.<br><br>"
+            "<i>Selecciona una regla para comenzar</i>"
         )
 
         # 5. Adición de Botones de seleccionar muñecas (reglas) al statusContentLayout
@@ -112,7 +86,7 @@ class GICModule(QWidget):
         self.derivation_step = 0
         self.derivation_history = []
         self.update_derivation_display()
-        self.ui.rulesDisplay.setText("🪆 ¡Empecemos! Selecciona una regla para abrir la primera muñeca.")
+        self.ui.rulesDisplay.setText("🪆 Selecciona una regla para abrir la primera muñeca.")
 
     # ======================================================================
     # PASO 4: FUNCIÓN AUXILIAR DE VISUALIZACIÓN
@@ -126,11 +100,11 @@ class GICModule(QWidget):
         
         if not self.derivation_history:
             # Texto guía al inicio
-            text += "🪆 Pasos para abrir las muñecas:\n\n"
-            text += "1. Selecciona la regla que quieres usar\n"
-            text += "2. Observa qué aparece cuando abres la muñeca\n"
-            text += "3. Si hay otra 🪆, ¡puedes abrirla de nuevo!\n"
-            text += "4. Continúa hasta formar: aaabbb\n"
+            text += "🪆 Pasos:\n\n"
+            text += "1. Elige la regla correcta.\n"
+            text += "2. Observa qué aparece al abrir la muñeca.\n"
+            text += "3. Si aparece otra 🪆, vuelve a abrirla.\n"
+            text += "4. Termina cuando formes aaabbb.\n"
         else:
             # Lista de reglas aplicadas
             for i, rule in enumerate(self.derivation_history):
@@ -225,10 +199,8 @@ class GICModule(QWidget):
         """
         self.show_dialog_message(
             "¡Ups! 🤔",
-            "Esa no es la muñeca correcta para abrir ahora.<br><br>"
-            "¡No te preocupes! Vamos a intentarlo de nuevo.<br><br>"
-            "💡 <b>Recuerda:</b> Necesitas formar el patrón <b>aaabbb</b><br>"
-            "Piensa qué regla te ayuda a hacer eso.",
+            "Esa no es la regla correcta para este paso.<br>"
+            "Intenta de nuevo y piensa en cómo formar <b>aaabbb</b>.",
             QMessageBox.Icon.Warning
         )
         # El reinicio va después de mostrar el mensaje, en la función de manejo
@@ -302,10 +274,8 @@ class GICModule(QWidget):
             # Derivación incompleta: Muestra la ventana emergente de error
             self.show_dialog_message(
                 "¡Todavía no! ⏳", 
-                "Primero debes terminar de abrir todas las muñecas 🪆<br><br>"
-                "Cuando hayas formado el patrón completo <b>aaabbb</b>,<br>"
-                "podrás ver el árbol mágico que muestra todo el proceso.<br><br>"
-                "¡Sigue abriendo muñecas usando las reglas de abajo!",
+                "Primero termina de abrir todas las muñecas 🪆.<br>"
+                "Cuando formes <b>aaabbb</b>, podrás ver el árbol mágico.",
                 QMessageBox.Icon.Information
             )
         else:

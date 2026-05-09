@@ -28,35 +28,15 @@ class GDCModule(QWidget):
         
         # Establecer el texto de teoría
         self.ui.theoryTextDisplay.setText(
-            "<h2>🌱 El Jardín Mágico que Crece Junto</h2><br>"
-            
-            "<b>🌱 Las Plantas:</b><br>"
-            "• <span style='font-size:20pt'>🌱</span> = Semilla mágica (S)<br>"
-            "• <span style='font-size:20pt'>🌿</span> = Planta verde (a)<br>"
-            "• <span style='font-size:20pt'>🌸</span> = Flor rosada (b)<br><br>"
-            
-            "<b>🎮 ¿Cómo jugar?</b><br>"
-            "1. Elige un nivel (Nivel 1 o 2)<br>"
-            "2. Mira tu semilla 🌱 en el centro<br>"
-            "3. Presiona '⏩ Siguiente Fase' para verla crecer<br>"
-            "4. Sigue hasta tener el patrón completo<br>"
-            "5. Presiona '✓ Validar' para verificar<br><br>"
-            
-            "<b>🎯 Metas:</b><br>"
-            "• Nivel 1: Formar 🌿🌿🌿🌸🌸🌸🌸🌸🌸 (aaabbbbbb - 3 plantas, 6 flores)<br>"
-            "• Nivel 2: Formar 🌿🌿🌿🌸🌸🌸 (aaabbb - 3 plantas, 3 flores)<br><br>"
-            
-            "<b>💡 La Magia del Jardín:</b><br>"
-            "En este jardín, las plantas miran a sus vecinas antes de crecer.<br>"
-            "¡Necesitan compañía para transformarse!<br><br>"
-            
-            "<b>🎓 ¿Por qué es Dependiente de Contexto?</b><br>"
-            "Las plantas miran quién está a su lado (su contexto) antes de crecer.<br><br>"
-            
-            "<b>Nivel 1:</b> 🌸🌱🌸 → 🌸🌿🌸 (necesita estar entre flores)<br>"
-            "<b>Nivel 2:</b> 🌿🌱 → 🌿🌿🌸 (necesita una planta verde al lado)<br><br>"
-            
-            "<i>¡Elige un nivel para empezar!</i>"
+            "<h2>🌱 Jardín Mágico</h2><br>"
+            "<b>Objetivo:</b> hacer crecer semillas 🌱 hasta formar el patrón pedido.<br><br>"
+            "<b>Piezas:</b> 🌱 semilla, 🌿 planta verde, 🌸 flor rosada.<br><br>"
+            "<b>Cómo usarlo:</b><br>"
+            "1. Elige un nivel.<br>"
+            "2. Pulsa <b>⏩ Siguiente Fase</b> para crecer paso a paso.<br>"
+            "3. Usa <b>✓ Validar</b> para comprobar el resultado.<br><br>"
+            "<b>Idea clave:</b> las plantas cambian según sus vecinas, por eso dependen del contexto.<br><br>"
+            "<i>Elige un nivel para empezar</i>"
         )
         
         # Estado del módulo
@@ -124,30 +104,11 @@ class GDCModule(QWidget):
             self.target_pattern = self.level1_target
             self.ui.targetPatternLabel.setText(f"🎯 Meta: {self.format_pattern(self.target_pattern)}")
             self.ui.rulesDisplay.setText(
-                "<h3>✨ Reglas Mágicas del Nivel 1:</h3><br>"
-                
-                "<b>🔮 Regla de Crecimiento:</b><br>"
-                "Cada vez que hay una semilla 🌱, crece así:<br>"
-                "• Aparece 1 planta verde 🌿 a la izquierda<br>"
-                "• La semilla 🌱 se mantiene en el centro<br>"
-                "• Aparecen 2 flores rosadas 🌸🌸 a la derecha<br><br>"
-                
-                "Ejemplo: 🌱 se convierte en 🌿🌱🌸🌸<br><br>"
-                
-                "<b>📖 Proceso completo (3 veces):</b><br>"
-                "1️⃣ 🌱 → 🌿🌱🌸🌸<br>"
-                "2️⃣ 🌿🌱🌸🌸 → 🌿🌿🌱🌸🌸🌸🌸<br>"
-                "3️⃣ 🌿🌿🌱🌸🌸🌸🌸 → 🌿🌿🌿🌱🌸🌸🌸🌸🌸🌸<br>"
-                "4️⃣ Finalmente la 🌱 desaparece → 🌿🌿🌿🌸🌸🌸🌸🌸🌸<br><br>"
-                
-                "<b>Resultado final:</b> 3 plantas 🌿 + 6 flores 🌸 (ratio 1:2)<br><br>"
-                
-                "<b>🎓 ¿Por qué es Dependiente de Contexto?</b><br>"
-                "En este nivel, cada semilla crece añadiendo elementos a ambos lados, "
-                "manteniendo siempre la proporción de 1 planta por cada 2 flores.<br><br>"
-                
-                "<b>📝 Consejo:</b><br>"
-                "Observa cómo en cada fase se añade 1🌿 a la izquierda y 2🌸 a la derecha."
+                "<h3>✨ Nivel 1</h3><br>"
+                "<b>Regla:</b> 🌱 → 🌿🌱🌸🌸<br><br>"
+                "<b>Meta:</b> repetir el crecimiento 3 veces y luego quitar la semilla.<br><br>"
+                "<b>Resultado:</b> 3 🌿 y 6 🌸.<br><br>"
+                "<b>Idea clave:</b> cada paso añade 1 planta a la izquierda y 2 flores a la derecha."
             )
         elif level == 2:
             self.current_garden = self.level2_initial
@@ -155,34 +116,11 @@ class GDCModule(QWidget):
             self.target_pattern = self.level2_target
             self.ui.targetPatternLabel.setText(f"🎯 Meta: {self.format_pattern(self.target_pattern)}")
             self.ui.rulesDisplay.setText(
-                "<h3>✨ Reglas Mágicas del Nivel 2:</h3><br>"
-                
-                "<b>🔮 Regla Especial (con Amigos):</b><br>"
-                "Si ya tienes una planta verde 🌿 y al lado hay una semilla 🌱, "
-                "entonces pasa algo mágico:<br>"
-                "• La planta verde 🌿 se queda<br>"
-                "• La semilla 🌱 también se queda<br>"
-                "• Pero ahora aparece una flor rosada 🌸 al final<br><br>"
-                
-                "Ejemplo: 🌿🌱 se convierte en 🌿🌱🌸<br><br>"
-                
-                "<b>Regla Normal:</b><br>"
-                "Si la semilla 🌱 está sola (sin planta verde al lado), "
-                "se convierte simplemente en: 🌿🌸<br><br>"
-                
-                "<b>🎓 ¿Por qué es Dependiente de Contexto?</b><br>"
-                "¡Este es un ejemplo perfecto! La semilla 🌱 se comporta diferente "
-                "según tenga o no una planta 🌿 a su izquierda:<br><br>"
-                
-                "• <b>Con contexto</b> (🌿🌱): Añade 🌸 al final → 🌿🌱🌸<br>"
-                "• <b>Sin contexto</b> (🌱 sola): Se convierte en 🌿🌸<br><br>"
-                
-                "La regla <b>revisa primero</b> si hay una 🌿 al lado antes de aplicarse. "
-                "¡Por eso es Dependiente de Contexto!<br><br>"
-                
-                "<b>📝 Consejo:</b><br>"
-                "Este nivel es especial porque muestra cómo la posición de las vecinas "
-                "cambia completamente lo que pasa. ¡Observa bien!"
+                "<h3>✨ Nivel 2</h3><br>"
+                "<b>Regla con contexto:</b> 🌿🌱 → 🌿🌱🌸<br>"
+                "<b>Regla sola:</b> 🌱 → 🌿🌸<br><br>"
+                "<b>Meta:</b> formar aaabbb.<br><br>"
+                "<b>Idea clave:</b> la semilla cambia según tenga o no una planta a su lado."
             )
         
         # Habilitar botones
@@ -194,10 +132,9 @@ class GDCModule(QWidget):
         self.update_display()
         self.show_info_message(
             "¡Nivel Listo! 🎮", 
-            f"¡Perfecto! Has elegido el Nivel {level}.<br><br>"
-            f"Ahora mira el centro de la pantalla y presiona el botón verde "
-            f"<b>'⏩ Siguiente Fase'</b> para ver cómo crece tu jardín.<br><br>"
-            f"🎯 Tu meta es llegar a: {self.format_pattern(self.target_pattern)}"
+            f"Has elegido el Nivel {level}.<br>"
+            f"Pulsa <b>⏩ Siguiente Fase</b> para hacerlo crecer.<br>"
+            f"Meta: {self.format_pattern(self.target_pattern)}"
         )
 
     def reset_garden(self):

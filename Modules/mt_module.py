@@ -28,21 +28,14 @@ class MTModule(QWidget):
         
         # Establecer el texto de teoría
         self.ui.theoryTextDisplay.setText(
-            "<h2>🚂 El Tren Mágico que Ordena Juguetes</h2><br>"
-            
-            "<b>🎨 Los Juguetes:</b><br>"
-            "• <span style='font-size:20pt'>🔴</span> = Pelota Roja<br>"
-            "• <span style='font-size:20pt'>🔵</span> = Pelota Azul<br>"
-            "• <span style='font-size:20pt'>□</span> = Vagón vacío<br><br>"
-            
-            "<b>🎮 ¿Cómo jugar?</b><br>"
-            "1. Mira los vagones del tren en el centro<br>"
-            "2. La casilla naranja 🟧 muestra dónde está la cabeza del tren<br>"
-            "3. Presiona '➡️ Siguiente Paso' para ver cómo ordena<br>"
-            "4. Observa cómo cambia las pelotas de lugar<br><br>"
-            
-            "<b>🎯 Meta:</b> Ordenar las pelotas<br>"
-            "De: 🔴🔵🔴🔵🔴🔵🔴🔵 → A: 🔴🔴🔴🔴🔵🔵🔵🔵<br><br>"
+            "<h2>🚂 Tren Mágico</h2><br>"
+            "<b>Objetivo:</b> ordenar pelotas 🔴 y 🔵.<br><br>"
+            "<b>Piezas:</b> 🔴 roja, 🔵 azul, □ vacío, 🟧 cabeza.<br><br>"
+            "<b>Cómo usarlo:</b><br>"
+            "1. Mira la cinta.<br>"
+            "2. Pulsa <b>➡️ Siguiente Paso</b>.<br>"
+            "3. Observa cómo el tren compara, cambia y avanza.<br><br>"
+            "<b>Idea clave:</b> una Máquina de Turing lee, escribe y se mueve.<br><br>"
             
             "<b>💡 El Tren Mágico puede:</b><br>"
             "1. <b>👀 Ver</b> qué pelota hay en el vagón<br>"
@@ -127,10 +120,9 @@ class MTModule(QWidget):
         """Ejecuta un paso de la Máquina de Turing."""
         if self.halted:
             self.show_info_message(
-                "¡Ya Terminamos! 🎉",
-                "El tren ya ordenó todas las pelotas.<br><br>"
-                "¿Quieres verlo otra vez?<br>"
-                "Presiona el botón rojo '↻ Empezar de Nuevo'"
+                "¡Ya terminó! 🎉",
+                "El tren ya ordenó todas las pelotas.<br>"
+                "Pulsa <b>↻ Empezar de Nuevo</b> para repetirlo."
             )
             return
         
@@ -145,9 +137,8 @@ class MTModule(QWidget):
             self.halted = True
             self.show_warning_message(
                 "¡Ups! 😕",
-                f"El tren se confundió y no sabe qué hacer.<br><br>"
-                f"Esto no debería pasar. Intenta presionar<br>"
-                f"el botón '↻ Empezar de Nuevo' para reiniciar."
+                "El tren se confundió y no sabe qué hacer.<br>"
+                "Pulsa <b>↻ Empezar de Nuevo</b> para reiniciar."
             )
             return
         
@@ -181,12 +172,10 @@ class MTModule(QWidget):
         if self.halted:
             self.show_success_message(
                 "¡Felicidades! 🎉🎊",
-                f"<b>¡El tren ordenó todas las pelotas perfectamente!</b><br><br>"
-                f"Resultado final: {self.format_tape()}<br><br>"
-                f"Lo hizo en <b>{self.step_count} pasos</b><br><br>"
-                f"Todas las rojas 🔴🔴 quedaron juntas<br>"
-                f"Y todas las azules 🔵🔵 quedaron juntas<br><br>"
-                f"<i>¿Quieres verlo otra vez? Presiona '↻ Empezar de Nuevo'</i>"
+                f"<b>El tren ordenó todas las pelotas.</b><br>"
+                f"Resultado: {self.format_tape()}<br>"
+                f"Pasos: <b>{self.step_count}</b><br>"
+                f"Pulsa <b>↻ Empezar de Nuevo</b> para repetirlo."
             )
 
     def reset_machine(self):
@@ -199,10 +188,8 @@ class MTModule(QWidget):
         self.update_display()
         self.show_info_message(
             "¡Listo para Empezar! 🚂",
-            "El tren volvió al inicio con las pelotas desordenadas.<br><br>"
-            "Las pelotas están así: 🔴🔵🔴🔵🔴🔵🔴🔵<br><br>"
-            "Presiona el botón verde '➡️ Siguiente Paso'<br>"
-            "para ver cómo el tren las ordena"
+            "El tren volvió al inicio con las pelotas desordenadas.<br>"
+            "Pulsa <b>➡️ Siguiente Paso</b> para ver cómo las ordena."
         )
 
     # ==========================================================================
@@ -228,9 +215,9 @@ class MTModule(QWidget):
             cell.update()
         
         # Actualizar labels con información más clara
-        self.ui.headPositionLabel.setText(f"🟧 La cabeza del tren está mirando el vagón número: {self.head_position}")
-        self.ui.stateLabel.setText(f"🎯 Qué está haciendo: {self.format_state(self.current_state)}")
-        self.ui.stepCounterLabel.setText(f"📊 Pasos completados: {self.step_count}")
+        self.ui.headPositionLabel.setText(f"🟧 Cabeza: vagón {self.head_position}")
+        self.ui.stateLabel.setText(f"🎯 Estado: {self.format_state(self.current_state)}")
+        self.ui.stepCounterLabel.setText(f"📊 Pasos: {self.step_count}")
         
         # Deshabilitar botón si terminó
         if self.halted:
@@ -240,26 +227,12 @@ class MTModule(QWidget):
 
     def update_instructions_display(self):
         """Muestra la tabla de instrucciones."""
-        text = "<h3>📋 ¿Cómo Ordena el Tren?</h3><br>"
-        
-        text += "<b>🔍 Buscando Rojas:</b><br>"
-        text += "• Encuentra 🔴 → La marca con ✖️ y avanza →<br>"
-        text += "• Encuentra 🔵 → Solo avanza →<br>"
-        text += "• Encuentra □ → Termina<br><br>"
-        
-        text += "<b>🔄 Buscando Azul:</b><br>"
-        text += "• Encuentra 🔴 → Sigue buscando →<br>"
-        text += "• Encuentra 🔵 → ¡La cambia por 🔴! y regresa ←<br><br>"
-        
-        text += "<b>⬅️ Regresando:</b><br>"
-        text += "• Vuelve hasta encontrar la marca ✖️<br>"
-        text += "• Cuando la encuentra → Pone 🔵 ahí<br><br>"
-        
-        text += "<b>🧹 Limpiando:</b><br>"
-        text += "• Cambia todas las ✖️ por 🔴<br>"
-        text += "• Al llegar al inicio → ¡Listo!<br><br>"
-        
-        text += "<b>🎯 Resultado:</b> Todas las 🔴 juntas, todas las 🔵 juntas"
+        text = "<h3>📋 Cómo funciona</h3><br>"
+        text += "<b>1. Busca rojas:</b> marca la 🔴 y avanza.<br>"
+        text += "<b>2. Busca azules:</b> si encuentra 🔵, la cambia por 🔴 y regresa.<br>"
+        text += "<b>3. Vuelve al inicio:</b> coloca la 🔵 donde quedó la marca.<br>"
+        text += "<b>4. Limpia:</b> convierte las marcas en 🔴 y termina.<br><br>"
+        text += "<b>Resultado:</b> todas las 🔴 juntas y todas las 🔵 juntas."
         
         self.ui.instructionsDisplay.setText(text)
 

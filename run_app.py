@@ -1,6 +1,21 @@
+import os
 import sys
-from PySide6.QtWidgets import (QApplication, QMainWindow, QStackedWidget, QWidget, QVBoxLayout, QLabel, QPushButton)
-from PySide6.QtCore import Signal, Qt
+from pathlib import Path
+
+
+def _relaunch_with_pyside6() -> None:
+    fallback_python = Path("/opt/anaconda3/bin/python")
+    if fallback_python.exists() and Path(sys.executable) != fallback_python:
+        os.execv(str(fallback_python), [str(fallback_python), str(Path(__file__).resolve()), *sys.argv[1:]])
+
+
+try:
+    from PySide6.QtWidgets import (QApplication, QMainWindow, QStackedWidget, QWidget, QVBoxLayout, QLabel, QPushButton)
+    from PySide6.QtCore import Signal, Qt
+except ModuleNotFoundError as error:
+    if error.name == "PySide6":
+        _relaunch_with_pyside6()
+    raise
 
 # IMPORTACIONES DE MÓDULOS
 from GUI.menu_page import MenuPage 
